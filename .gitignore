@@ -1,0 +1,10 @@
+/.vs/
+/.vsconfig
+/Library/
+/Logs/
+/Temp/
+/obj
+/Build
+/Assembly-CSharp.csproj
+/Assembly-CSharp-Editor.csproj
+/MetaUnity.sln
