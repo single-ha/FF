@@ -1,22 +1,26 @@
-﻿using UnityEngine;
+﻿using System.IO;
+using UnityEngine;
 
-namespace Assets
+public class GameMain : MonoBehaviour
 {
-    public class GameMain:MonoBehaviour
-    {
-        public static GameMain Inst;
-        public AssetLoadType assetType;
-        public string assetRootPath;
+    public static GameMain Inst;
+    public AssetLoadType assetType;
+    public string assetRootPath;
 
-        void Awake()
-        {
-            Inst = this;
-        }
+    void Awake()
+    {
+        Inst = this;
     }
 
-    public enum AssetLoadType
+    void Start()
     {
-        Editor,
-        Bundle,
+        UIManager.Inst.Init();
+        UIManager.Inst.OpenPanel<LoginPanel>();
     }
+}
+
+public enum AssetLoadType
+{
+    Editor,
+    Bundle,
 }
