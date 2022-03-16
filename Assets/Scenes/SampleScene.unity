@@ -377,7 +377,7 @@ Camera:
   field of view: 60
   orthographic: 0
   orthographic size: 5
-  m_Depth: -1
+  m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -512,7 +512,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69d498d8b880e244fa047db7ef5f69f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  assetType: 1
+  assetType: 0
   assetRootPath: D:\ttt\git\FF\Build\AssetsBunde\StandaloneWindows
 --- !u!1001 &847739731076921841
 PrefabInstance:
@@ -521,10 +521,55 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1418289521400874431, guid: fb1d3f0a031a6e84b849d43b576b9551,
+        type: 3}
+      propertyPath: m_Depth
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1418289521400874431, guid: fb1d3f0a031a6e84b849d43b576b9551,
+        type: 3}
+      propertyPath: m_ClearFlags
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1418289521400874431, guid: fb1d3f0a031a6e84b849d43b576b9551,
+        type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 32
+      objectReference: {fileID: 0}
     - target: {fileID: 2105486288417722711, guid: fb1d3f0a031a6e84b849d43b576b9551,
         type: 3}
       propertyPath: m_Name
       value: UIRoot
+      objectReference: {fileID: 0}
+    - target: {fileID: 2105486288417722711, guid: fb1d3f0a031a6e84b849d43b576b9551,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3180767780795269328, guid: fb1d3f0a031a6e84b849d43b576b9551,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4565048714324629326, guid: fb1d3f0a031a6e84b849d43b576b9551,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4697083317269472859, guid: fb1d3f0a031a6e84b849d43b576b9551,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4953469054995495154, guid: fb1d3f0a031a6e84b849d43b576b9551,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5358979632805289155, guid: fb1d3f0a031a6e84b849d43b576b9551,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7494677731018188088, guid: fb1d3f0a031a6e84b849d43b576b9551,
         type: 3}
