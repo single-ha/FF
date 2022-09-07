@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using Assets.Script.UI;
+using Assets.Script.UI.LoginPanel;
 using UnityEngine;
 
 public class GameMain : MonoBehaviour
@@ -16,8 +18,9 @@ public class GameMain : MonoBehaviour
 
     void Start()
     {
+        GameObject.DontDestroyOnLoad(this.transform.parent.gameObject);
         UIManager.Inst.Init();
-        UIManager.Inst.OpenPanel<LoginPanel>();
+        UIManager.Inst.OpenPanel<LoginPanelPresenter,LoginPanel>();
     }
 
     public void StopCoroutines(List<Coroutine> coroutines)

@@ -1,5 +1,5 @@
 ﻿using System;
-using Assets.Script.UI.Base;
+using Assets.Script.UI;
 using UnityEngine;
 
 public class NormalPanelChange : IPanelChange
@@ -22,16 +22,20 @@ public class NormalPanelChange : IPanelChange
     private NormalPanelChange()
     {
     }
-
-    public bool Change(PanelBase curPanel, PanelBase openPanel,UIDate uiDate)
+    public bool Change(PanelPresenterBase curPanelPresenter, PanelPresenterBase openPanelPresenter, PanelDateBase panelDateBase)
     {
         try
         {
-            if (curPanel != null)
+            if (curPanelPresenter == openPanelPresenter)
             {
-                curPanel.Close(false);
+                openPanelPresenter.Show(panelDateBase);
+                return true;
             }
-            openPanel.Show(uiDate);
+            if (curPanelPresenter != null && curPanelPresenter.panelConfig.panelType == PanelType.Normal)
+            {
+                curPanelPresenter.SetViewVisible(false);
+            }
+            openPanelPresenter.Show(panelDateBase);
             return true;
         }
         catch (Exception e)

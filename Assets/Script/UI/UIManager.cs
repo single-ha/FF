@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Assets.Script.UI.Base;
+using System.Linq;
+using Assets.Script.UI;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
+using Enumerable = System.Linq.Enumerable;
 
 public class UIManager
 {
@@ -27,14 +30,16 @@ public class UIManager
     private GameObject popRoot;
     private GameObject systemRoot;
 
-    private PanelBase curShow;
-    private List<PanelBase> openPanels;
-
+    private PanelPresenterBase curShow;
+    private List<PanelPresenterBase> openPanels;
+    private Dictionary<Type, List<PanelPresenterBase>> openPanelsDic;
     public IPanelChange panelChange;
 
     public void Init()
     {
-        this.root = GameObject.Find("UIRoot");
+        var obj = ResManager.Inst.Load<GameObject>("UIRoot.prefab");
+        this.root = GameObject.Instantiate(obj);
+        GameObject.DontDestroyOnLoad(this.root);
         if (root == null)
         {
             return;
@@ -45,12 +50,20 @@ public class UIManager
         popRoot = root.transform.Find("Canvas/PopRoot").gameObject;
         systemRoot = root.transform.Find("Canvas/SystemRoot").gameObject;
 
-        openPanels = new List<PanelBase>();
+        openPanels = new List<PanelPresenterBase>();
+        openPanelsDic = new Dictionary<Type, List<PanelPresenterBase>>();
     }
 
-    public PanelBase OpenPanel<T>(UIDate uiDate=null) where T : PanelBase, new()
+    public T OpenPanel<T,TW>(PanelDateBase panelDateBase = null) where T:PanelPresenterBase where TW:PanelBase,new()
     {
         T panel = Activator.CreateInstance<T>();
+        panel.Init(ClosePanel);
+        if (panel.panelConfig.unique && openPanelsDic.ContainsKey(panel.GetType()))
+        {
+            panel = (T)openPanelsDic[panel.GetType()].FirstOrDefault();
+            ReOpenPanel(panel, panelDateBase);
+            return panel;
+        }
         panel.PreShow();
         if (panel.canOpen)
         {
@@ -58,8 +71,6 @@ public class UIManager
             {
                 panelChange = NormalPanelChange.Inst;
             }
-            string name = $"{panel.panelConfig.name}.prefab";
-            var o = ResManager.Inst.Load<GameObject>(name);
             GameObject patent = null;
             switch (panel.panelConfig.panelType)
             {
@@ -77,19 +88,22 @@ public class UIManager
                     patent = normalRoot;
                     break;
             }
-            var obj = GameObject.Instantiate(o, patent.transform);
-            panel.Init(obj);
-            bool open = panelChange.Change(curShow, panel, uiDate);
+            panel.InitPanel<TW>(patent);
+            bool open = panelChange.Change(curShow, panel, panelDateBase);
+            panelChange = null;
             if (open)
             {
                 curShow = panel;
-                if (panel.panelConfig.index < 0)
+                openPanels.Add(panel);
+                if (openPanelsDic.ContainsKey(panel.GetType()))
                 {
-                    openPanels.Add(panel);
+                    openPanelsDic[panel.GetType()].Add(panel);
                 }
                 else
                 {
-                    openPanels.Insert(panel.panelConfig.index, panel);
+                    List<PanelPresenterBase> temp = new List<PanelPresenterBase>();
+                    temp.Add(panel);
+                    openPanelsDic[panel.GetType()] = temp;
                 }
 
                 return panel;
@@ -104,51 +118,56 @@ public class UIManager
         }
     }
 
-    public void ReturnPanel(PanelBase panelBase,params object[] datas)
+    public void ReOpenPanel(PanelPresenterBase panelPresenterBase, PanelDateBase panelDateBase = null)
     {
-        int index = openPanels.IndexOf(panelBase);
-        if (index>=0)
+        int index = openPanels.IndexOf(panelPresenterBase);
+        if (index >= 0)
         {
             int count = openPanels.Count;
-            for (int i = count-1; i >index; i--)
+            for (int i = count - 1; i > index; i--)
             {
-                var panel= openPanels[i];
-                panel.Destory();
+                var panel = openPanels[i];
+                panel.DestoryPanel();
                 openPanels.RemoveAt(i);
+                RemoveFormDic(panel);
             }
-            openPanels[index].ReturnPanel(datas);
+
+            openPanels[index].Show(panelDateBase);
         }
         else
         {
-            
         }
     }
-    public void ReturnPanel(string panelName, params object[] datas)
+
+    private void RemoveFormDic(PanelPresenterBase panelPresenter)
     {
-        for (int i = openPanels.Count-1; i >=0 ; i--)
+        openPanelsDic[panelPresenter.GetType()].Remove(panelPresenter);
+        if (openPanelsDic[panelPresenter.GetType()].Count <= 0)
         {
-            var panel = openPanels[i];
-            if (panel.panelConfig.name==panelName)
+            openPanelsDic.Remove(panelPresenter.GetType());
+        }
+    }
+
+    public void ClosePanel( PanelPresenterBase panelPresenterBase)
+    {
+        int index = openPanels.IndexOf(panelPresenterBase);
+        if (index >=0)
+        {
+            if (index - 1 >= 0&&index-1<openPanels.Count)
             {
-                ReturnPanel(panel, datas);
-                break;
+                openPanels[index - 1].SetViewVisible(true);
             }
-        }
-    }
-    public void ClosePanle(PanelBase panelBase)
-    {
-        int index = openPanels.IndexOf(panelBase);
-        if (index > 0)
-        {
-            openPanels[index].Destory();
-            openPanels[index - 1].SetViewVisible(true);
+            openPanels[index].DestoryPanel();
+            openPanels.RemoveAt(index);
+            RemoveFormDic(panelPresenterBase);
         }
         else
         {
-            Debug.Log($"no this panel:{panelBase.panelConfig.name} or this panle is main panel");
+            Debug.Log($"no this panelPresenter:{panelPresenterBase.GetType()} or this panle is main panelPresenter");
             //当前打开的界面不包含在已打开界面列表中            
         }
     }
+
     /// <summary>
     /// 清除所有的界面
     /// </summary>
@@ -156,8 +175,10 @@ public class UIManager
     {
         for (int i = 0; i < openPanels.Count; i++)
         {
-            openPanels[i].Destory();
+            openPanels[i].DestoryPanel();
         }
+
         openPanels.Clear();
+        openPanelsDic.Clear();
     }
 }

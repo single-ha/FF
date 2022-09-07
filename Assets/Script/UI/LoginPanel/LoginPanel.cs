@@ -1,24 +1,18 @@
-﻿using Assets.Script.UI.Base;
-using Assets.Script.UI.LoginPanel;
-using UnityEngine;
+﻿using Assets.Script.UI;
+using UnityEngine.UI;
 
-public class LoginPanel : PanelBase
+namespace Assets.Script.UI.LoginPanel
 {
-    
-    public override void CreatView()
+    public class LoginPanel:PanelBase
     {
-        view = new LoginView();
-    }
-
-    protected override void CongifPanel()
-    {
-        panelConfig = new PanelConfig();
-        panelConfig.name = "LoginPanel";
-        panelConfig.panelType = PanelType.Normal;
-    }
-
-    public override void OnInit()
-    {
-        
+        public Button Btn_Start;
+        protected override void GetDefault()
+        {
+            prefabName = "LoginPanel";
+        }
+        public override void OnInit()
+        {
+            this.Btn_Start = GetComponent<Button>("Button");
+        }
     }
 }

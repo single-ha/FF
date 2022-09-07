@@ -1,7 +1,7 @@
-﻿using Assets.Script.UI.Base;
+﻿using Assets.Script.UI;
 using UnityEngine;
 
 public interface IPanelChange
 {
-    bool Change(PanelBase curPanel, PanelBase openPanel, UIDate uiDate);
+    bool Change(PanelPresenterBase curPanelPresenter, PanelPresenterBase openPanelPresenter, PanelDateBase panelDateBase);
 }
