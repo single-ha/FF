@@ -18,11 +18,22 @@ public class GameMain : MonoBehaviour
 
     void Start()
     {
-        GameObject.DontDestroyOnLoad(this.transform.parent.gameObject);
-        UIManager.Inst.Init();
-        UIManager.Inst.OpenPanel<LoginPanelPresenter,LoginPanel>();
+        InitGame();
+        UIManager.Inst.OpenPanel<LoginPanelPresenter,LoginPanelView>();
     }
 
+    void InitGame()
+    {
+        GameObject.DontDestroyOnLoad(this.transform.parent.gameObject);
+        StopAllCoroutines();
+        InitManagers();
+    }
+    void InitManagers()
+    {
+        ObjectPoolManager.Inst.Init();
+        ResManager.Inst.Init();
+        UIManager.Inst.Init();
+    }
     public void StopCoroutines(List<Coroutine> coroutines)
     {
         if (coroutines!=null)
@@ -30,6 +41,17 @@ public class GameMain : MonoBehaviour
             for (int i = 0; i < coroutines.Count; i++)
             {
                 StopCoroutine(coroutines[i]);
+            }
+        }
+    }
+
+    public void StartCoroutines(List<IEnumerator> enumerators)
+    {
+        if (enumerators != null)
+        {
+            for (int i = 0; i < enumerators.Count; i++)
+            {
+                StartCoroutine(enumerators[i]);
             }
         }
     }

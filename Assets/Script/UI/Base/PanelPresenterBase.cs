@@ -6,45 +6,45 @@ namespace Assets.Script.UI
 {
     public abstract class PanelPresenterBase:ViewPresenterBase
     {
-        public PanelConfig panelConfig;
-        private Action<PanelPresenterBase> closeAction;
-        protected PanelBase panelView;
+        private PanelConfig panelConfig;
+
+        public PanelConfig PanelConfig
+        {
+            get
+            {
+                return panelConfig;
+            }
+        }
+        protected PanelViewBase panelView;
+
         /// <summary>
         /// 界面是否可以打开.
         /// </summary>
         public bool canOpen = true;
 
-        public void Init(Action<PanelPresenterBase> closeAction)
+        public override void Init(Action<ViewPresenterBase> closeAction)
         {
+            base.Init(closeAction);
             panelConfig = new PanelConfig();
-            ConfigPanelPresenter();
-            this.closeAction = closeAction;
-            Init();
+            ConfigPanelPresenter(panelConfig);
+            initViewAction = InitPanel;
         }
 
         protected virtual void SetPrefabName()
         {
             panelView.SetPrefab();
         }
-
-        public void InitPanel<T>(GameObject patent)where T:PanelBase,new()
+        private void InitPanel(GameObject patent)
         {
-            _view = new T();
-            panelView=_view as PanelBase;
+            panelView = _view as PanelViewBase;
             SetPrefabName();
-            string name = $"{panelView.prefabName}.prefab";
+            string name = $"{panelView.PrefabName}.prefab";
             var o = ResManager.Inst.Load<GameObject>(name);
             var obj = GameObject.Instantiate(o, patent.transform);
             InitView(obj);
         }
-        protected abstract void ConfigPanelPresenter();
-        public override void Close()
-        {
-            PreClose();
-            closeAction?.Invoke( this);
-            AfterClose();
-            this.date?.OnClose?.Invoke();
-        }
+
+        protected abstract void ConfigPanelPresenter(PanelConfig panelConfig);
 
         public void DestoryPanel()
         {
@@ -55,7 +55,6 @@ namespace Assets.Script.UI
 
     public class PanelConfig
     {
-        public string name;
         public PanelType panelType;
         public bool unique;
 

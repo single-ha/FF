@@ -19,9 +19,12 @@ public class ObjectPoolManager
         }
     }
 
-    private ObjectPoolManager()
+    public void Init()
     {
         pool = new Dictionary<Type, Queue<ObjeckBase>>();
+    }
+    private ObjectPoolManager()
+    {
     }
 
     public T GetObject<T>() where T : ObjeckBase

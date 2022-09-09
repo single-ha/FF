@@ -31,7 +31,7 @@ public class NormalPanelChange : IPanelChange
                 openPanelPresenter.Show(panelDateBase);
                 return true;
             }
-            if (curPanelPresenter != null && curPanelPresenter.panelConfig.panelType == PanelType.Normal)
+            if (curPanelPresenter != null && openPanelPresenter.PanelConfig.panelType == PanelType.Normal)
             {
                 curPanelPresenter.SetViewVisible(false);
             }

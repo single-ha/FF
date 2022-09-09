@@ -20,6 +20,11 @@ public class ResManager
             return _inst;
         }
     }
+
+    private ResManager()
+    {
+    }
+
     public Dictionary<string, List<Coroutine>> loadList;
 
     private IResLoader loader;

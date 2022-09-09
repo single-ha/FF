@@ -1,17 +1,18 @@
-﻿using System.Runtime.CompilerServices;
+﻿
+using UnityEngine;
 
 namespace Assets.Script.UI.LoadingPanel
 {
     public class LoadingPanelPresenter:PanelPresenterBase
     {
-        private LoadingPanel Panel
+        private LoadingPanelView PanelView
         {
             get
             {
-                return this.View<LoadingPanel>();
+                return this.View<LoadingPanelView>();
             }
         }
-        protected override void ConfigPanelPresenter()
+        protected override void ConfigPanelPresenter(PanelConfig panelConfig)
         {
             panelConfig.panelType = PanelType.Sys;
             panelConfig.unique = true;
@@ -19,8 +20,11 @@ namespace Assets.Script.UI.LoadingPanel
 
         public void SetValue(float value)
         {
-            this.Panel.SetValue(value);
-
+            this.PanelView.SetValue(value);
+            if (value>=1)
+            {
+                Close();
+            }
         }
     }
 }
