@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Assets.Script.Config;
 using TMPro.EditorUtilities;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,7 +24,7 @@ namespace Assets.Script
 
         public Stage()
         {
-            var obj = ResManager.Inst.Load<GameObject>("Stage");
+            var obj = ResManager.Inst.Load<GameObject>("Stage.prefab");
             this.root = GameObject.Instantiate(obj);
             Init();
         }
@@ -42,16 +43,46 @@ namespace Assets.Script
         {
             this.camera.tag = "MainCamera";
         }
+
         public void ShowGameObject(GameObject obj)
         {
-            Tool.ClearChild(obj);
+            Tool.ClearChild(main);
             obj.transform.SetParent(main);
-            obj.transform.localPosition=Vector3.zero;
+            obj.transform.localPosition = Vector3.zero;
+        }
+
+        private void SetImageBg(string texture_name)
+        {
+            if (string.IsNullOrEmpty(texture_name))
+            {
+                this.imageBgRoot.gameObject.SetActive(false);
+            }
+            else
+            {
+                this.imageBgRoot.gameObject.SetActive(true);
+                var texture = ResManager.Inst.Load<Texture>($"{texture_name}");
+                SetImageBg(texture);
+            }
+        }
+
+        private void SetPrefabBg(string prefab_name)
+        {
+            if (string.IsNullOrEmpty(prefab_name))
+            {
+                this.prefabRoot.gameObject.SetActive(false);
+            }
+            else
+            {
+                this.prefabRoot.gameObject.SetActive(true);
+                GameObject obj = ResManager.Inst.Load<GameObject>($"{prefab_name}");
+                var o = GameObject.Instantiate(obj);
+                SetPrefabBg(o);
+            }
         }
 
         public void SetImageBg(Texture texture)
         {
-            if (texture==null)   
+            if (texture == null)
             {
                 imageBgRoot.gameObject.SetActive(false);
             }
@@ -65,10 +96,20 @@ namespace Assets.Script
 
         public void SetPrefabBg(GameObject prefab)
         {
-            Tool.ClearChild(prefabRoot);
-            prefab.transform.SetParent(prefabRoot);
-            prefab.transform.localPosition=Vector3.zero;
+            if (prefab == null)
+            {
+                prefabRoot.gameObject.SetActive(false);
+            }
+            else
+            {
+                prefabRoot.gameObject.SetActive(true);
+                Tool.ClearChild(prefabRoot);
+                prefab.transform.SetParent(prefabRoot);
+                prefab.transform.localPosition = Vector3.zero;
+                prefab.transform.localScale = Vector3.one;
+            }
         }
+
         public void SetVisible(bool visible)
         {
             root.gameObject.SetActive(visible);
@@ -77,6 +118,23 @@ namespace Assets.Script
         public void Destory()
         {
             GameObject.Destroy(root);
+        }
+
+        public void Decorate(string id)
+        {
+            var config = GameConfig.BackGround.Backgrounds;
+            if (config.ContainsKey(id))
+            {
+                var c = config[id];
+                SetImageBg(c.image_bg);
+                SetPrefabBg(c.prefab_bg);
+            }
+            else
+            {
+                Debuger.LogError($"stages配置中未包含id为{id}的配置");
+            }
+
+            var a = GameConfig.BackGround.Backgrounds;
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class ObjectPoolManager
 {
-    public Dictionary<Type, Queue<ObjeckBase>> pool;
+    public Dictionary<Type, Queue<IObjeck>> pool;
     private static ObjectPoolManager _inst;
 
     public static ObjectPoolManager Inst
@@ -21,13 +21,13 @@ public class ObjectPoolManager
 
     public void Init()
     {
-        pool = new Dictionary<Type, Queue<ObjeckBase>>();
+        pool = new Dictionary<Type, Queue<IObjeck>>();
     }
     private ObjectPoolManager()
     {
     }
 
-    public T GetObject<T>() where T : ObjeckBase
+    public T GetObject<T>() where T : IObjeck
     {
         var t = typeof(T);
         if (pool.ContainsKey(t) && pool[t].Count > 0)
@@ -41,7 +41,7 @@ public class ObjectPoolManager
         }
     }
 
-    public void Recycle(ObjeckBase o)
+    public void Recycle(IObjeck o)
     {
         var t = o.GetType();
         o.ReSet();
@@ -51,7 +51,7 @@ public class ObjectPoolManager
         }
         else
         {
-            var que = new Queue<ObjeckBase>();
+            var que = new Queue<IObjeck>();
             que.Enqueue(o);
             pool[t] = que;
         }

@@ -1,4 +1,4 @@
-﻿namespace Assets.Script.UI.MainPanel
+﻿namespace Assets.Script.UI
 {
     public class MainPanelView:PanelViewBase
     {

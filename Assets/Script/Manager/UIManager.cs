@@ -27,11 +27,17 @@ public class UIManager
     private GameObject normalRoot;
     private GameObject popRoot;
     private GameObject systemRoot;
-
-    private PanelPresenterBase curShow;
-    private List<PanelPresenterBase> openPanels;
+    //normal
+    private List<PanelPresenterBase> normalPanels;
+    //pop
+    private List<PanelPresenterBase> popPanels;
+    //normal panel 持有的pop
+    private Dictionary<Type, List<PanelPresenterBase>> popHandle;
+    //sys
+    private List<PanelPresenterBase> sys_Panels;
     private Dictionary<Type, List<PanelPresenterBase>> openPanelsDic;
-    public IPanelChange panelChange;
+    public IOpenPanel openPanel;
+    public IPanelClose closePanel;
 
     public void Init()
     {
@@ -49,8 +55,11 @@ public class UIManager
         normalRoot = root.transform.Find("Canvas/NormalRoot").gameObject;
         popRoot = root.transform.Find("Canvas/PopRoot").gameObject;
         systemRoot = root.transform.Find("Canvas/SystemRoot").gameObject;
-        openPanels = new List<PanelPresenterBase>();
+        normalPanels = new List<PanelPresenterBase>();
+        popPanels = new List<PanelPresenterBase>();
+        sys_Panels = new List<PanelPresenterBase>();
         openPanelsDic = new Dictionary<Type, List<PanelPresenterBase>>();
+        popHandle = new Dictionary<Type, List<PanelPresenterBase>>();
     }
 
 
@@ -67,9 +76,9 @@ public class UIManager
         panel.PreShow();
         if (panel.canOpen)
         {
-            if (panelChange == null)
+            if (openPanel == null)
             {
-                panelChange = NormalPanelChange.Inst;
+                openPanel = GetDefaultOpen(panel.PanelConfig.panelType);
             }
             GameObject patent = null;
             switch (panel.PanelConfig.panelType)
@@ -87,26 +96,12 @@ public class UIManager
                     break;
             }
             panel.InitView<TW>(patent);
-            bool open = panelChange.Change(curShow, panel, panelDateBase);
-            panelChange = null;
+            bool open = openPanel.Open( panel, panelDateBase);
+            openPanel = null;
             if (open)
             {
-                curShow = panel;
-                openPanels.Add(panel);
-                if (openPanelsDic.ContainsKey(panel.GetType()))
-                {
-                    openPanelsDic[panel.GetType()].Add(panel);
-                }
-                else
-                {
-                    List<PanelPresenterBase> temp = new List<PanelPresenterBase>();
-                    temp.Add(panel);
-                    openPanelsDic[panel.GetType()] = temp;
-                }
-
                 return panel;
             }
-
             return null;
         }
         else
@@ -118,34 +113,200 @@ public class UIManager
 
     public void ReOpenPanel(PanelPresenterBase panelPresenterBase, PanelDateBase panelDateBase = null)
     {
-        int index = openPanels.IndexOf(panelPresenterBase);
+        List<PanelPresenterBase> list=GetPanelList(panelPresenterBase.PanelConfig.panelType);
+        int index = list.IndexOf(panelPresenterBase);
         if (index >= 0)
         {
-            int count = openPanels.Count;
-            for (int i = count - 1; i > index; i--)
-            {
-                var panel = openPanels[i];
-                panel.Close();
-                openPanels.RemoveAt(i);
-                RemoveFormDic(panel);
-            }
-
-            openPanels[index].Show(panelDateBase);
+            list.RemoveAt(index);
+            list.Add(panelPresenterBase);
+            panelPresenterBase.Show(panelDateBase);
         }
         else
         {
         }
     }
 
-    private void RemoveFormDic(PanelPresenterBase panelPresenter)
+    public void SetNormalVisible(PanelPresenterBase panel,bool visible)
     {
-        openPanelsDic[panelPresenter.GetType()].Remove(panelPresenter);
-        if (openPanelsDic[panelPresenter.GetType()].Count <= 0)
+        panel.SetViewVisible(visible);
+        Type t = panel.GetType();
+        if (popHandle.ContainsKey(t))
         {
-            openPanelsDic.Remove(panelPresenter.GetType());
+            for (int i = 0; i < popHandle[t].Count; i++)
+            {
+                popHandle[t][i].SetViewVisible(visible);
+            }
+        }
+    }
+    public int GetNormalIndex(PanelPresenterBase panel)
+    {
+        return normalPanels.IndexOf(panel);
+    }
+    public PanelPresenterBase GetTopNormal()
+    {
+        return GetNormalPanel(normalPanels.Count-1);
+    }
+
+    public PanelPresenterBase GetNormalPanel(int index)
+    {
+        if (normalPanels.Count>index&&index>=0)
+        {
+            return normalPanels[index];
+        }
+        return null;
+    }
+    private void Add2Dic(PanelPresenterBase panel)
+    {
+        if (openPanelsDic.ContainsKey(panel.GetType()))
+        {
+            openPanelsDic[panel.GetType()].Add(panel);
+        }
+        else
+        {
+            List<PanelPresenterBase> temp = new List<PanelPresenterBase>();
+            temp.Add(panel);
+            openPanelsDic[panel.GetType()] = temp;
+        }
+    }
+    public void AddNormal(PanelPresenterBase panel)
+    {
+        normalPanels.Add(panel);
+        Add2Dic(panel);
+    }
+
+    public void AddPop(PanelPresenterBase pop, PanelPresenterBase handel=null)
+    {
+        popPanels.Add(pop);
+        if (handel==null)
+        {
+            handel = GetTopNormal();
+        }
+        AddPop2Handel(pop, handel);
+        Add2Dic(pop);
+    }
+
+    private void AddPop2Handel(PanelPresenterBase pop, PanelPresenterBase handel)
+    {
+        if (handel==null)
+        {
+            return;
+        }
+        Type t = handel.GetType();
+        if (popHandle.ContainsKey(t))
+        {
+            popHandle[t].Add(pop);
+        }
+        else
+        {
+            List<PanelPresenterBase> temp = new List<PanelPresenterBase>();
+            temp.Add(pop);
+            popHandle[t] = temp;
         }
     }
 
+    public void AddSys(PanelPresenterBase panel)
+    {
+        sys_Panels.Add(panel);
+        Add2Dic(panel);
+    }
+    private void RemoveFormDic(PanelPresenterBase panelPresenter)
+    {
+        Type t = panelPresenter.GetType();
+        if (openPanelsDic.ContainsKey(t)&&openPanelsDic[t].Contains(panelPresenter))
+        {
+            openPanelsDic[t].Remove(panelPresenter);
+            if (openPanelsDic[t].Count <= 0)
+            {
+                openPanelsDic.Remove(t);
+            }
+        }
+    }
+
+    public void RemoveNormal(PanelPresenterBase normalPanel)
+    {
+        if (normalPanels.Contains(normalPanel))
+        {
+            normalPanels.Remove(normalPanel);
+        }
+        RemovePopByNormal(normalPanel);
+        RemoveFormDic(normalPanel);
+    }
+    /// <summary>
+    /// 把pop界面从列表中移除
+    /// </summary>
+    /// <param name="popPanel"></param>
+    public void RemovePop(PanelPresenterBase popPanel)
+    {
+        if (popPanels.Contains(popPanel))
+        {
+            popPanels.Remove(popPanel);
+        }
+
+        List<Type> needRemove = new List<Type>();
+        foreach (var handle in popHandle)
+        {
+            if (handle.Value.Contains(popPanel))
+            {
+                handle.Value.Remove(popPanel);
+                RemoveFormDic(popPanel);
+            }
+
+            if (handle.Value.Count<=0)
+            {
+                needRemove.Add(handle.Key);
+            }
+        }
+
+        if (needRemove.Count>=0)
+        {
+            for (int i = 0; i < needRemove.Count; i++)
+            {
+                popHandle.Remove(needRemove[i]);
+            }
+        }
+    }
+    public void RemovePop(PanelPresenterBase handle, PanelPresenterBase popPanel)
+    {
+        if (popPanels.Contains(popPanel))
+        {
+            popPanels.Remove(popPanel);
+        }
+
+        Type t = handle.GetType();
+        if (popHandle.ContainsKey(t))
+        {
+            var pops = popHandle[t];
+            if (pops.Contains(popPanel))
+            {
+                pops.Remove(popPanel);
+            }
+            if (pops.Count <= 0)
+            {
+                popHandle.Remove(t);
+            }
+        }
+        RemoveFormDic(popPanel);
+    }
+
+    public void RemovePopByNormal(PanelPresenterBase normalPanel)
+    {
+        Type t = normalPanel.GetType();
+        if (popHandle.ContainsKey(t))
+        {
+            for (int i = 0; i < popHandle[t].Count; i++)
+            {
+                RemovePop(normalPanel,popHandle[t][i]);
+            }
+        }
+    }
+
+    public void RemoveSys(PanelPresenterBase panel)
+    {
+        if (sys_Panels.Contains(panel))
+        {
+            sys_Panels.Remove(panel);
+        }
+    }
     public void ClosePanel(ViewPresenterBase presenterBase)
     {
         if (!(presenterBase is PanelPresenterBase))
@@ -153,39 +314,86 @@ public class UIManager
             return;
         }
         var panelPresenter = presenterBase as PanelPresenterBase;
-        int index = openPanels.IndexOf(panelPresenter);
-        if (index >= 0)
+        if (closePanel==null)
         {
-            if (index - 1 >= 0 && index - 1 < openPanels.Count)
-            {
-                curShow= openPanels[index - 1];
-                curShow.SetViewVisible(true);
-            }
-            else
-            {
-                curShow = null;
-            }
-            openPanels[index].DestoryPanel();
-            openPanels.RemoveAt(index);
-            RemoveFormDic(panelPresenter);
+            closePanel = GetDefaultClose(panelPresenter.PanelConfig.panelType);
         }
-        else
-        {
-            Debug.LogWarning($"no this panelPresenter:{presenterBase.GetType()} or this panle is main panelPresenter");
-            //当前打开的界面不包含在已打开界面列表中            
-        }
+        closePanel.Close(panelPresenter);
+        closePanel = null;
     }
 
+    public void ClosePoPByHandle(PanelPresenterBase handlePanel)
+    {
+        Type t = handlePanel.GetType();
+        if (popHandle.ContainsKey(t))
+        {
+            var pops = popHandle[t];
+            for (int i = 0; i < pops.Count; i++)
+            {
+                var pop = pops[i];
+                pop.DestoryPanel();
+            }
+            RemovePopByNormal(handlePanel);
+        }
+    }
+    private IOpenPanel GetDefaultOpen(PanelType panelType)
+    {
+        switch (panelType)
+        {
+            case PanelType.Normal:
+                return OpenPanel_Normal.Inst;
+            case PanelType.PoP:
+                return OpenPanel_Pop.Inst;
+            case PanelType.Sys:
+                return OpenPanel_Pop.Inst;
+            default:
+                return OpenPanel_Pop.Inst;
+        }
+    }
+    private IPanelClose GetDefaultClose(PanelType panelType)
+    {
+        switch (panelType)
+        {
+            case PanelType.Normal:
+                return ClosePanel_Normal.Inst;
+            case PanelType.PoP:
+                return ClosePanel_Pop.Inst;
+            case PanelType.Sys:
+                return ClosePanel_Sys.Inst;
+            default:
+                Debug.LogError("不支持的界面类型");
+                return ClosePanel_Pop.Inst;
+        }
+    }
+    private List<PanelPresenterBase> GetPanelList(PanelType panelType)
+    {
+        switch (panelType)
+        {
+            case PanelType.Normal:
+                return normalPanels;
+            case PanelType.PoP:
+                return popPanels;
+            case PanelType.Sys:
+                return sys_Panels;
+            default:
+                return normalPanels;
+        }
+    }
     /// <summary>
     /// 清除所有的界面
     /// </summary>
     public void ClearPanel()
     {
-        for (int i = 0; i < openPanels.Count; i++)
+        for (int i = 0; i < normalPanels.Count; i++)
         {
-            openPanels[i].Close();
+            normalPanels[i].Close();
         }
-        openPanels.Clear();
+        for (int i = 0; i < sys_Panels.Count; i++)
+        {
+            sys_Panels[i].Close();
+        }
+        normalPanels.Clear();
+        sys_Panels.Clear();
         openPanelsDic.Clear();
     }
 }

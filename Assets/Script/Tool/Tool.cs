@@ -31,8 +31,15 @@ namespace Assets.Script
             {
                 return null;
             }
-
-            return root.transform.Find(path).GetComponent<T>();
+            Transform t = root.transform.Find(path);
+            if (t == null)
+            {
+                return null;
+            }
+            else
+            {
+                return t.GetComponent<T>();
+            }
         }
     }
 }

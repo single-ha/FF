@@ -1,7 +1,7 @@
 ﻿using Assets.Script.UI;
 using UnityEngine.UI;
 
-namespace Assets.Script.UI.LoginPanel
+namespace Assets.Script.UI
 {
     public class LoginPanelView:PanelViewBase
     {

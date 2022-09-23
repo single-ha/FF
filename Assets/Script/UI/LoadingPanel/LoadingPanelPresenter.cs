@@ -1,7 +1,7 @@
 ﻿
 using UnityEngine;
 
-namespace Assets.Script.UI.LoadingPanel
+namespace Assets.Script.UI
 {
     public class LoadingPanelPresenter:PanelPresenterBase
     {
@@ -23,8 +23,14 @@ namespace Assets.Script.UI.LoadingPanel
             this.PanelView.SetValue(value);
             if (value>=1)
             {
-                Close();
+                SetViewVisible(false);
             }
+        }
+
+        public void LoadComplate()
+        {
+            SetValue(1);
+            SetViewVisible(false);
         }
     }
 }

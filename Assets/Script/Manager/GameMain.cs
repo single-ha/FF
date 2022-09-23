@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using Assets.Script.UI;
-using Assets.Script.UI.LoginPanel;
 using UnityEngine;
 
 public class GameMain : MonoBehaviour
@@ -25,7 +24,6 @@ public class GameMain : MonoBehaviour
     void InitGame()
     {
         GameObject.DontDestroyOnLoad(this.transform.parent.gameObject);
-        StopAllCoroutines();
         InitManagers();
     }
     void InitManagers()

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-public class ABData : ObjeckBase
+public class ABData : IObjeck
 {
     /// <summary>
     /// 被依赖引用计数(显性加载的bundle不进行计数)
@@ -153,7 +153,7 @@ public class ABData : ObjeckBase
         }
     }
 
-    public override void ReSet()
+    public void ReSet()
     {
         used = 0;
         unLoadTime = 0;

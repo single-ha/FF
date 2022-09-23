@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace Assets.Script.UI.LoadingPanel
+namespace Assets.Script.UI
 {
     public class LoadingPanelView:PanelViewBase
     {
