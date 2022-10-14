@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.Script.Manager;
 using Assets.Script.UI;
 using UnityEngine;
 
@@ -51,7 +52,7 @@ public class UIManager
         {
             return;
         }
-        uiCamera = root.transform.Find("Camera").GetComponent<Camera>();
+        uiCamera = root.transform.Find("UICamera").GetComponent<Camera>();
         normalRoot = root.transform.Find("Canvas/NormalRoot").gameObject;
         popRoot = root.transform.Find("Canvas/PopRoot").gameObject;
         systemRoot = root.transform.Find("Canvas/SystemRoot").gameObject;
@@ -60,6 +61,7 @@ public class UIManager
         sys_Panels = new List<PanelPresenterBase>();
         openPanelsDic = new Dictionary<Type, List<PanelPresenterBase>>();
         popHandle = new Dictionary<Type, List<PanelPresenterBase>>();
+        StageManager.Inst.AddOverLayCamera(uiCamera);
     }
 
 

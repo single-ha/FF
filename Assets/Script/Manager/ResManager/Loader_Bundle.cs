@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Assets.Script;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -58,7 +59,7 @@ public class Loader_Bundle : IResLoader, IResLoader_Stop
         }
 
         result = Path.Combine(Application.streamingAssetsPath, fileName);
-        Debug.LogError(result);
+        Debuger.LogError(result);
         return result;
     }
 
@@ -69,7 +70,7 @@ public class Loader_Bundle : IResLoader, IResLoader_Stop
         var main = AssetBundle.LoadFromFile(path);
         if (main == null)
         {
-            Debug.LogError("manifest file is not exit");
+            Debuger.LogError("manifest file is not exit");
         }
         else
         {
@@ -162,7 +163,7 @@ public class Loader_Bundle : IResLoader, IResLoader_Stop
         string bundleName = GetBundleName(assetName);
         if (string.IsNullOrEmpty(bundleName))
         {
-            Debug.LogError($"bundle中没有该资源:{assetName}");
+            Debuger.LogError($"bundle中没有该资源:{assetName}");
             return null;
         }
         else

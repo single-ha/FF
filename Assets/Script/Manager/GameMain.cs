@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using Assets.Script.Manager;
 using Assets.Script.UI;
 using UnityEngine;
 
@@ -30,6 +31,7 @@ public class GameMain : MonoBehaviour
     {
         ObjectPoolManager.Inst.Init();
         ResManager.Inst.Init();
+        StageManager.Inst.Init();
         UIManager.Inst.Init();
     }
     public void StopCoroutines(List<Coroutine> coroutines)

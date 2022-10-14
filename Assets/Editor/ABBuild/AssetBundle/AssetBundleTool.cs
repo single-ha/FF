@@ -67,6 +67,10 @@ public static class AssetBundleTool
             return false;
         }
 
+        if (f.FullName.Contains("Script"))
+        {
+            return false;
+        }
         switch (f.Extension)
         {
             case ".cs":

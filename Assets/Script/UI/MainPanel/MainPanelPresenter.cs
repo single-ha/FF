@@ -1,13 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Assets.Script.Config;
+using Assets.Script.Manager;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 namespace Assets.Script.UI
 {
     public class MainPanelPresenter:PanelPresenterBase
     {
-        private Stage mainStage;
         protected override void ConfigPanelPresenter(PanelConfig panelConfig)
         {
             panelConfig.panelType = PanelType.Normal;
@@ -15,30 +16,14 @@ namespace Assets.Script.UI
 
         protected override void OnShow(PanelDateBase panelDateBase)
         {
-            mainStage = new Stage();
-            var config = GameConfig.BackGround;
-            mainStage.Decorate("1");
-            var loadingPanel = UIManager.Inst.OpenPanel<LoadingPanelPresenter, LoadingPanelView>();
-            StartCoroutine(Test(loadingPanel));
-        }
-        private IEnumerator Test(LoadingPanelPresenter panel)
-        {
-            Debuger.Log("111");
-            int process = 0;
-            panel.SetValue(0);
-            float value = 0;
-            List<string> loads = new List<string>() {"ground_0.prefab" };
-            for (int i = 0; i < loads.Count; i++)
-            {
-                var obj = ResManager.Inst.Load<GameObject>(loads[i]);
-                var root = GameObject.Instantiate(obj);
-                mainStage.ShowGameObject(root);
-                process++;
-                value = process / (float)2;
-                panel.SetValue(value);
-                yield return null;
-            }
-            panel.LoadComplate();
+            var config = Backgrounds_Config.Inst.Backgrounds;
+            StageManager.Inst.MainStage.Decorate("1");
+            StageManager.Inst.MainStage.SetCamera("1");
+            Sphere s = new Sphere();
+            s.SetSphereTemplate("6001",0);
+            StageManager.Inst.MainStage.Show(s);
+            // var loadingPanel = UIManager.Inst.OpenPanel<LoadingPanelPresenter, LoadingPanelView>();
+            // StartCoroutine(Test(loadingPanel));
         }
     }
 }

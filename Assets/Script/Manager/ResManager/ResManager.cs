@@ -25,7 +25,7 @@ public class ResManager
     {
     }
 
-    public Dictionary<string, List<Coroutine>> loadList;
+    private Dictionary<string, List<Coroutine>> loadList;
 
     private IResLoader loader;
 
