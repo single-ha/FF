@@ -3,12 +3,12 @@ using UnityEngine;
 
 namespace Assets.Script
 {
-    public class FloorHelp
+    public class SphereFloorMask
     {
         private SphereFloor floor;
         private GameObject meshObj;
 
-        public FloorHelp(SphereFloor floor )
+        public SphereFloorMask(SphereFloor floor )
         {
             this.floor = floor;
         }

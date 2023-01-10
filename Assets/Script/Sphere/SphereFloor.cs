@@ -19,10 +19,10 @@ namespace Assets.Script
             get => floorObj;
         }
 
-        private FloorHelp floorHelp;
+        private SphereFloorMask _sphereFloorMask;
         public SphereFloor(Transform root) : base(root)
         {
-            floorHelp = new FloorHelp(this);
+            _sphereFloorMask = new SphereFloorMask(this);
         }
 
         public override void SetComponent(string id, int level)
@@ -39,7 +39,7 @@ namespace Assets.Script
                 floorObj = GameObject.Instantiate(o);
                 var material = ResManager.Inst.Load<Material>($"{config.material}.mat");
                 SetComponent(material);
-                floorHelp.ShowMask();
+                // _sphereFloorMask.ShowMask();
             }
             else
             {
