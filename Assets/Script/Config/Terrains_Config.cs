@@ -15,7 +15,7 @@ namespace Assets.Script.Config
         {
             get
             {
-                ReadDictionary(ref terrains);
+                ReadDictionary(ref terrains,"terrains");
                 return terrains;
             }
         }
@@ -26,7 +26,7 @@ namespace Assets.Script.Config
         {
             get
             {
-                ReadDictionary(ref size);
+                ReadDictionary(ref size,"size");
                 return size;
             }
         }

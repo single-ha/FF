@@ -194,6 +194,10 @@ namespace Assets.Script.Config
         private void LoadConfig()
         {
             var config = ResManager.Inst.Load<TextAsset>($"{config_name}.json");
+            if (config==null)
+            {
+                Debuger.LogError($"配置文件不存在:{config_name}");
+            }
             json = JsonMapper.ToObject(config.text);
         }
 
