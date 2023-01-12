@@ -22,11 +22,11 @@ namespace Assets.Script.Config
 
         public class Sphere_Config : ConfigNode
         {
-            public string floor
+            public string Terrain
             {
                 get
                 {
-                    return ReadStr("floor");
+                    return ReadStr("terrain");
                 }
             }
         }

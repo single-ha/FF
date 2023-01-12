@@ -10,11 +10,12 @@ namespace Assets.Script
         private string defaultName = "SphereRoot";
         private GameObject root;
 
+        private SphereMap sphereMap;
         public GameObject Root
         {
             get => root;
         }
-        private SphereFloor _floor;
+        private SphereTerrain _terrain;
         public Sphere()
         {
             Init();
@@ -44,7 +45,7 @@ namespace Assets.Script
             var floorRoot = Tool.GetComponent<Transform>(root, "floorRoot");
             var ringRoot = Tool.GetComponent<Transform>(root, "ringRoot");
             var terrainRoot = Tool.GetComponent<Transform>(root, "terrainRoot");
-            _floor = new SphereFloor(floorRoot);
+            _terrain = new SphereTerrain(terrainRoot);
         }
 
         public void SetSphereTemplate(string id, int level)
@@ -53,7 +54,7 @@ namespace Assets.Script
             if (config.ContainsKey(id))
             {
                 var c = config[id];
-                SetFloor(c.floor, level);
+                SetTerrain(c.Terrain, level);
             }
             else
             {
@@ -61,9 +62,10 @@ namespace Assets.Script
             }
         }
 
-        public void SetFloor(string id,int level)
+        public void SetTerrain(string id,int level)
         {
-            _floor.SetComponent(id,level);
+            _terrain.SetComponent(id,level);
+            sphereMap = new SphereMap(level);
         }
     }
 }
