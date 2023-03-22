@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Assets.Script;
+using Assets.Script.Manager;
 using UnityEngine;
 using Object = UnityEngine.Object;
 

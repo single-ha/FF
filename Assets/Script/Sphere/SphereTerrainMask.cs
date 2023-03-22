@@ -1,84 +1,78 @@
-﻿using Assets.Script.Config;
+﻿using System.Collections.Generic;
+using Assets.Script.Config;
+using Assets.Script.Manager;
 using UnityEngine;
 
 namespace Assets.Script
 {
     public class SphereTerrainMask
     {
-        private SphereTerrain _terrain;
-        private GameObject meshObj;
+        private GameObject root;
+        private GameObject maskRoot;
+        private Vector3 scale;
+        Vector3 normal = new Vector3(1, 0, 1);
 
-        public SphereTerrainMask(SphereTerrain terrain )
+        private Sphere sphere;
+
+        public SphereTerrainMask(GameObject root, Sphere sphere)
         {
-            this._terrain = terrain;
+            this.root = root;
+            this.sphere = sphere;
+            scale = new Vector3(SphereMap.SphereCell, 0, SphereMap.SphereCell);
         }
-        public void ShowMask()
+
+        public void ShowMask(Dictionary<int, Dictionary<int, int>> mapHeight)
         {
-            if (meshObj==null)
+            if (maskRoot == null)
             {
-                CreatObj();
+                maskRoot = new GameObject();
+                maskRoot.name = "terrainMask";
+                maskRoot.transform.SetParent(this.root.transform);
+                maskRoot.transform.localPosition = new Vector3(0, 0.1f, 0);
             }
             else
             {
-                meshObj.gameObject.SetActive(true);
+            }
+
+            maskRoot.gameObject.SetActive(true);
+            RefreshCells(mapHeight);
+        }
+
+        private void RefreshCells(Dictionary<int, Dictionary<int, int>> mapHeight)
+        {
+            GameObject temp = ResManager.Inst.Load<GameObject>("Cell.prefab");
+            foreach (var v0 in mapHeight)
+            {
+                foreach (var v1 in v0.Value)
+                {
+                    if (v1.Value >= 0)
+                    {
+                        SetCell(v0.Key, v1.Key, temp);
+                    }
+                }
             }
         }
 
-        private void CreatObj()
+        private void SetCell(int i, int j, GameObject temp)
         {
-            meshObj = new GameObject();
-            meshObj.transform.SetParent(_terrain.TerrainObj.transform.parent);
-            meshObj.transform.localPosition = new Vector3(0, 0.1f, 0);
-            Mesh mesh = CreadMesh();
-            var mesh_component = meshObj.AddComponent<MeshFilter>();
-            mesh_component.mesh = mesh;
-            var mesh_render = meshObj.AddComponent<MeshRenderer>();
-
-        }
-
-        private Mesh CreadMesh()
-        {
-            var terrain = this._terrain.TerrainObj.transform.Find("1");
-            if (terrain==null)
+            string name = $"{i}_{j}";
+            Transform obj = maskRoot.transform.Find(name);
+            if (obj == null)
             {
-                return null;
+                obj = GameObject.Instantiate(temp, maskRoot.transform).transform;
+                obj.localPosition = SphereMap.GetPositionByGrid(i, j);
+                obj.localScale = scale;
+                obj.name = name;
             }
 
-            var meshFilter = terrain.GetComponent<MeshFilter>();
-            if (meshFilter==null)
-            {
-                return null;
-            }
-
-            for (int i = 0; i < meshFilter.mesh.uv.Length; i++)
-            {
-                Debug.Log(meshFilter.mesh.uv[i]);
-            }
-            return meshFilter.mesh;
+            obj.gameObject.SetActive(sphere.Check(i, j, normal));
         }
 
-        private Vector3[] GetVertices()
-        {
-            return new Vector3[]
-            {
-                new Vector3(0,0,0),
-                new Vector3(0,0,1),
-                new Vector3(1,0,0),
-            };
-        }
-
-        private int[] GetTriangles()
-        {
-            return new int[]
-            {
-                0,1,2
-            };
-        }
         public void HideMask()
         {
-            if (meshObj!=null)
+            if (maskRoot != null)
             {
-                meshObj.gameObject.SetActive(false);
+                maskRoot.gameObject.SetActive(false);
             }
         }
     }

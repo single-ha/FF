@@ -32,5 +32,10 @@ namespace Assets.Script.UI
             SetValue(1);
             SetViewVisible(false);
         }
+
+        protected override ViewBase CreatViewInstance()
+        {
+            return new LoadingPanelView();
+        }
     }
 }

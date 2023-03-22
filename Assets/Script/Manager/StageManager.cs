@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
+using Assets.Script;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
+
 namespace Assets.Script.Manager
 {
-    public class StageManager : Instance<StageManager>
+    public class StageManager : Instance<StageManager>, IManager
     {
         private Stage mainStage;
         private Stage showStage;
@@ -15,11 +17,21 @@ namespace Assets.Script.Manager
             get { return mainStage; }
         }
 
-        public void Init()
+        public Stage ShowStage
         {
-            mainStage = NewStage();
-            mainStage.SetMainStage();
-            ShowStage();
+            get
+            {
+                return showStage;
+            }
+        }
+        public void OnEnable()
+        {
+            if (mainStage == null)
+            {
+                mainStage = NewStage();
+                mainStage.SetMainStage();
+            }
+            EnbaleStage();
             MainStage.SetModelVisible(false);
         }
 
@@ -55,7 +67,7 @@ namespace Assets.Script.Manager
             }
         }
 
-        public void ShowStage(Stage stage = null)
+        public void EnbaleStage(Stage stage = null)
         {
             if (stage == null)
             {
@@ -68,6 +80,7 @@ namespace Assets.Script.Manager
                 {
                     showStage.SetStageVisible(false);
                 }
+
                 showStage = stage;
                 showStage.SetStageVisible(true);
                 SetCameraStack();
@@ -84,9 +97,9 @@ namespace Assets.Script.Manager
 
         public Stage NewStage()
         {
-           var stage= ObjectPoolManager.Inst.GetObject<Stage>();
-           stage.SetStageVisible(false);
-           return stage;
+            var stage = ObjectPoolManager.Inst.GetObject<Stage>();
+            stage.SetStageVisible(false);
+            return stage;
         }
 
         public void RecycleStage(Stage stage)

@@ -3,6 +3,7 @@
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
+        _Color("Color",Color)=(1,1,1,1)
         _Cutoff ("Alpha Cutoff", Range(0.0, 1.0)) = 0.5
     }
     SubShader
@@ -28,6 +29,7 @@
             // sampler2D _MainTex;
             float4 _MainTex_ST;
             half _Cutoff;
+            float4 _Color;
 
             struct appdata
             {
@@ -52,7 +54,8 @@
             half4 frag (v2f i) : SV_Target
             {
                 half4 col = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv);
-                return half4(1,0,0,col.a);
+                _Color.a=col.a;
+                return _Color;
             }
             ENDHLSL
         }

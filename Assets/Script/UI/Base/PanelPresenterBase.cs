@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Xml;
+using Assets.Script.Manager;
 using UnityEngine;
 
 namespace Assets.Script.UI
@@ -41,7 +42,7 @@ namespace Assets.Script.UI
             string name = $"{panelView.PrefabName}.prefab";
             var o = ResManager.Inst.Load<GameObject>(name);
             var obj = GameObject.Instantiate(o, patent.transform);
-            InitView(obj);
+            GetObjects(obj);
         }
 
         protected abstract void ConfigPanelPresenter(PanelConfig panelConfig);

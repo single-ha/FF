@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.Script.Manager;
 using LitJson;
 using UnityEngine;
 
@@ -90,11 +91,10 @@ namespace Assets.Script.Config
                 return value;
             }
         }
-
         public void ReadArray(ref int[] arr, string key=null)
         {
             JsonData t =string.IsNullOrEmpty(key)?json:json[key];
-            if (arr==null||arr.Length<t.Count)
+            if (arr==null||arr.Length!=t.Count)
             {
                 arr = new int[t.Count];
             }
@@ -107,7 +107,7 @@ namespace Assets.Script.Config
         public void ReadArray(ref double[] arr, string key = null)
         {
             JsonData t = string.IsNullOrEmpty(key) ? json : json[key];
-            if (arr == null || arr.Length < t.Count)
+            if (arr == null || arr.Length != t.Count)
             {
                 arr = new double[t.Count];
             }
@@ -120,7 +120,7 @@ namespace Assets.Script.Config
         public void ReadArray(ref string[] arr, string key = null)
         {
             JsonData t = string.IsNullOrEmpty(key) ? json : json[key];
-            if (arr == null || arr.Length < t.Count)
+            if (arr == null || arr.Length != t.Count)
             {
                 arr = new string[t.Count];
             }
@@ -133,7 +133,7 @@ namespace Assets.Script.Config
         public void ReadArray(ref bool[] arr, string key = null)
         {
             JsonData t = string.IsNullOrEmpty(key) ? json : json[key];
-            if (arr == null || arr.Length < t.Count)
+            if (arr == null || arr.Length != t.Count)
             {
                 arr = new bool[t.Count];
             }

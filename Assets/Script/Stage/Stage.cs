@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Assets.Script.Config;
+using Assets.Script.Manager;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
@@ -11,6 +12,9 @@ namespace Assets.Script
         private GameObject root;
         private Transform cameraAnchor;
         private Camera camera;
+
+        public Camera Camera => camera;
+
         private UniversalAdditionalCameraData cameraData;
         private Transform imageBgRoot;
         private RawImage bg_Image;
@@ -98,16 +102,11 @@ namespace Assets.Script
 
         public void Decorate(string id)
         {
-            var config = Backgrounds_Config.Inst.Backgrounds;
-            if (config.ContainsKey(id))
+            var background = BackgroundsConfig.GetConfig(id);
+            if (background!=null)
             {
-                var c = config[id];
-                SetImageBg(c.image_bg);
-                SetPrefabBg(c.prefab_bg);
-            }
-            else
-            {
-                Debuger.LogError($"stages配置中未包含id为{id}的配置");
+                SetImageBg(background.image_bg);
+                SetPrefabBg(background.prefab_bg);
             }
         }
 

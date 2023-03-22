@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using Assets.Script.Config;
 using Assets.Script.Manager;
-using UnityEngine;
-using UnityEngine.Rendering.Universal;
 
 namespace Assets.Script.UI
 {
@@ -14,16 +12,19 @@ namespace Assets.Script.UI
             panelConfig.panelType = PanelType.Normal;
         }
 
+        protected override ViewBase CreatViewInstance()
+        {
+            return new MainPanelView();
+        }
+
         protected override void OnShow(PanelDateBase panelDateBase)
         {
-            var config = Backgrounds_Config.Inst.Backgrounds;
             StageManager.Inst.MainStage.Decorate("1");
             StageManager.Inst.MainStage.SetCamera("1");
             Sphere s = new Sphere();
-            s.SetSphereTemplate("6001",0);
+            s.SetSphereTemplate("6000");
             StageManager.Inst.MainStage.Show(s);
             // var loadingPanel = UIManager.Inst.OpenPanel<LoadingPanelPresenter, LoadingPanelView>();
-            // StartCoroutine(Test(loadingPanel));
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Assets.Script
     {
         private Transform cameraAnchor;
         private Camera camera;
-        private Cameras_Config.Camera_Config config;
+        private CamerasConfig.CameraConfig config;
 
         private bool isControll=true;
         public bool IsControll
@@ -108,10 +108,10 @@ namespace Assets.Script
         }
         public void UseConfig(string id)
         {
-            var config = Cameras_Config.Inst.Cameras;
-            if (config.ContainsKey(id))
+            var cameraConfig = CamerasConfig.GetConfig(id);
+            if (cameraConfig!=null)
             {
-                this.config = config[id];
+                this.config = cameraConfig;
                 SetCameraPostion(this.config.position);
                 SetCameraRotation(this.config.rotation);
                 SetCameraFov(this.config.fov);

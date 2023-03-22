@@ -25,7 +25,14 @@ namespace Assets.Script.UI
             return (T)_view;
         }
 
+        protected abstract ViewBase CreatViewInstance();
         public virtual void Init(Action<ViewPresenterBase> closeAction)
+        {
+            SetCloseAction(closeAction);
+            initViewAction = GetObjects;
+        }
+
+        private void SetCloseAction(Action<ViewPresenterBase> closeAction)
         {
             if (closeAction != null)
             {
@@ -35,21 +42,18 @@ namespace Assets.Script.UI
             {
                 this.closeAction = delegate(ViewPresenterBase panelPresenterBase) { SetViewVisible(false); };
             }
-
-            initViewAction = InitView;
         }
 
-        public virtual void InitView(GameObject root)
+        public void InitView(GameObject root)
+        {
+            _view= CreatViewInstance();
+            initViewAction?.Invoke(root);
+        }
+        public virtual void GetObjects(GameObject root)
         {
             _view.Init(root);
             _view.GetObjects();
             OnInitView();
-        }
-
-        public void InitView<T>(GameObject root) where T : ViewBase, new()
-        {
-            _view = new T();
-            initViewAction?.Invoke(root);
         }
 
         public virtual void OnInitView()

@@ -1,59 +1,53 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public class ObjectPoolManager
+namespace Assets.Script.Manager
 {
-    public Dictionary<Type, Queue<IObjeck>> pool;
-    private static ObjectPoolManager _inst;
-
-    public static ObjectPoolManager Inst
+    public class ObjectPoolManager : Instance<ObjectPoolManager>, IManager
     {
-        get
+        public Dictionary<Type, Queue<IObjeck>> pool;
+
+        public void OnEnable()
         {
-            if (_inst == null)
+            if (pool == null)
             {
-                _inst = new ObjectPoolManager();
+                pool = new Dictionary<Type, Queue<IObjeck>>();
             }
-
-            return _inst;
+            else
+            {
+                pool.Clear();
+            }
         }
-    }
 
-    public void Init()
-    {
-        pool = new Dictionary<Type, Queue<IObjeck>>();
-    }
-    private ObjectPoolManager()
-    {
-    }
 
-    public T GetObject<T>() where T : IObjeck
-    {
-        var t = typeof(T);
-        if (pool.ContainsKey(t) && pool[t].Count > 0)
+        public T GetObject<T>() where T : IObjeck
         {
-            return (T) pool[t].Dequeue();
+            var t = typeof(T);
+            if (pool.ContainsKey(t) && pool[t].Count > 0)
+            {
+                return (T)pool[t].Dequeue();
+            }
+            else
+            {
+                var retult = Activator.CreateInstance<T>();
+                return retult;
+            }
         }
-        else
-        {
-            var retult = Activator.CreateInstance<T>();
-            return retult;
-        }
-    }
 
-    public void Recycle(IObjeck o)
-    {
-        var t = o.GetType();
-        o.ReSet();
-        if (pool.ContainsKey(t))
+        public void Recycle(IObjeck o)
         {
-            pool[t].Enqueue(o);
-        }
-        else
-        {
-            var que = new Queue<IObjeck>();
-            que.Enqueue(o);
-            pool[t] = que;
+            var t = o.GetType();
+            o.ReSet();
+            if (pool.ContainsKey(t))
+            {
+                pool[t].Enqueue(o);
+            }
+            else
+            {
+                var que = new Queue<IObjeck>();
+                que.Enqueue(o);
+                pool[t] = que;
+            }
         }
     }
 }

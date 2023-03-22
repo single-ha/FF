@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Assets.Script
 {
-    public class Tool
+    public static class Tool
     {
         public static void ClearChild(Transform root)
         {
@@ -68,6 +68,25 @@ namespace Assets.Script
             else
             {
                 return t.GetComponent<T>();
+            }
+        }
+
+        public static void SetLayer(this GameObject gameObject, string layerName)
+        {
+            gameObject.layer = LayerMask.NameToLayer(layerName);
+            for (int i = 0; i < gameObject.transform.childCount; i++)
+            {
+                var g = gameObject.transform.GetChild(i);
+                SetLayer(g.gameObject,layerName);
+            }
+        }
+        public static void SetLayer(this GameObject gameObject, int layer)
+        {
+            gameObject.layer =layer;
+            for (int i = 0; i < gameObject.transform.childCount; i++)
+            {
+                var g = gameObject.transform.GetChild(i);
+                SetLayer(g.gameObject, layer);
             }
         }
     }

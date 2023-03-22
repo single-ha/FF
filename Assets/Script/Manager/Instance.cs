@@ -1,20 +1,17 @@
-﻿namespace Assets.Script.Manager
+﻿public class Instance<T> where T : new()
 {
-    public class Instance<T> where T:new()
+    private static T _inst;
+
+    public static T Inst
     {
-        private static T _inst;
-
-        public static T Inst
+        get
         {
-            get
+            if (_inst == null)
             {
-                if (_inst == null)
-                {
-                    _inst = new T();
-                }
-
-                return _inst;
+                _inst = new T();
             }
+
+            return _inst;
         }
     }
 }

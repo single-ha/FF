@@ -19,7 +19,7 @@ public class GameMain : MonoBehaviour
     void Start()
     {
         InitGame();
-        UIManager.Inst.OpenPanel<LoginPanelPresenter,LoginPanelView>();
+        UIManager.Inst.OpenPanel<LoginPanelPresenter>();
     }
 
     void InitGame()
@@ -29,10 +29,10 @@ public class GameMain : MonoBehaviour
     }
     void InitManagers()
     {
-        ObjectPoolManager.Inst.Init();
-        ResManager.Inst.Init();
-        StageManager.Inst.Init();
-        UIManager.Inst.Init();
+        for (int i = 0; i < ManagerList.Inst.managers.Count; i++)
+        {
+            ManagerList.Inst.managers[i].OnEnable();
+        }
     }
     public void StopCoroutines(List<Coroutine> coroutines)
     {
