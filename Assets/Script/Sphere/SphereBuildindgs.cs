@@ -18,7 +18,7 @@ namespace Assets.Script
         }
         public void AddBuilding(string id, int x,int y)
         {
-            var buildingConfig = BuildingsConfig.GetConfig(id);
+            var buildingConfig = BuildingConfig.GetConfig(id);
             if (buildingConfig==null)
             {
                 return;
@@ -27,20 +27,15 @@ namespace Assets.Script
             GameObject o = ResManager.Inst.Load<GameObject>(path);
             GameObject building = GameObject.Instantiate(o, this.root);
             building.transform.position = SphereMap.GetPositionByGrid(x, y);
+            // buildings[$"{x}_{y}"] = building;
         }
 
-        public void RefreshBuildingsShow(List<BuildingInSphereData> sphereMapBuildings)
+        public void AddBuildings(List<BuildingInSphereData> sphereMapBuildings)
         {
-            if (buildings.Count>0)
-            {
-                Tool.ClearChild(this.root);
-                buildings.Clear();
-            }
-
             for (int i = 0; i < sphereMapBuildings.Count; i++)
             {
                 var d = sphereMapBuildings[i];
-                AddBuilding(d.id,d.grid);
+                AddBuilding(d.id, d.grid);
             }
         }
     }

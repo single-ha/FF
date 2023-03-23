@@ -1,6 +1,6 @@
 // Made with Amplify Shader Editor
 // Available at the Unity Asset Store - http://u3d.as/y3X 
-Shader "FX/Add"
+Shader "FF/FX/Add"
 {
 	Properties
 	{
@@ -24,7 +24,6 @@ Shader "FX/Add"
 		
 		Tags { "RenderType"="Transparent" "Queue"="Transparent" "RenderPipeline" = "UniversalPipeline" }
 		//LOD 100
-		
 		Stencil
         {
             Ref [_Stencil]

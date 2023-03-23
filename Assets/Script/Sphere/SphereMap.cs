@@ -38,7 +38,7 @@ namespace Assets.Script
         public void Init(int level)
         {
             this.level = level;
-            var sizeConfig = Config.TerrainsConfig.GetSizeConfig(level.ToString());
+            var sizeConfig = Config.TerrainSize.GetTerrainSize(level.ToString());
             if (sizeConfig!=null)
             {
                 diameter = sizeConfig.Diameter;
@@ -107,20 +107,20 @@ namespace Assets.Script
         {
             return Check((int)grid.x, (int)grid.y, size);
         }
-        public bool Check(int x,int y, Vector3 size)
+        public bool Check(int grid_X,int grid_Y, Vector3 size)
         {
-            if (!InMap(x,y))
+            if (!InMap(grid_X,grid_Y))
             {
                 return false;
             }
             else
             {
-                int height = mapHeight[x][y];
+                int height = mapHeight[grid_X][grid_Y];
                 int mid_x = (int)size.x / 2;
                 int mid_y = (int)size.y / 2;
-                for (int i = x-mid_x; i < x+mid_x; i++)
+                for (int i = grid_X-mid_x; i < grid_X+mid_x; i++)
                 {
-                    for (int j = y-mid_y; j <y+mid_y ; j++)
+                    for (int j = grid_Y-mid_y; j <grid_Y+mid_y ; j++)
                     {
                         if (!InMap(i,j))
                         {
@@ -128,7 +128,7 @@ namespace Assets.Script
                         }
                         else if (height!=mapHeight[i][j])
                         {
-                            Debuger.LogWarning($"不在一个高度相同的平面上:x:{x},y:{y},h0:{height},h1:{mapHeight[i][j]}");
+                            Debuger.LogWarning($"不在一个高度相同的平面上:grid_X:{grid_X},grid_Y:{grid_Y},h0:{height},h1:{mapHeight[i][j]}");
                             return false;
                         }
                     }
@@ -137,11 +137,11 @@ namespace Assets.Script
                 return true;
             }
         }
-        public bool InMap(int x, int y)
+        public bool InMap(int grid_X, int grid_Y)
         {
-            if (!mapHeight.ContainsKey(x) || !mapHeight[x].ContainsKey(y))
+            if (!mapHeight.ContainsKey(grid_X) || !mapHeight[grid_X].ContainsKey(grid_Y))
             {
-                Debuger.LogWarning($"超出地图范围:x:{x},y:{y}");
+                Debuger.LogWarning($"超出地图范围:grid_X:{grid_X},grid_Y:{grid_Y}");
                 return false;
             }
 
@@ -168,41 +168,46 @@ namespace Assets.Script
             for (int i = 0; i < length; i++)
             {
                 var id = cBuildings[i];
-                var buildingConfig = BuildingsConfig.GetConfig(id);
+                var buildingConfig = BuildingConfig.GetConfig(id);
                 if (buildingConfig!=null)
                 {
                     if (Check(cBuildingsX[i],cBuildingsY[i],buildingConfig.Size))
                     {
-                        AddBuilding(id, cBuildingsX[i], cBuildingsY[i],false);
+                        AddBuilding(id, cBuildingsX[i], cBuildingsY[i]);
+                    }
+                    else
+                    {
+                        Debuger.LogWarning($"id为:{id},位置为:x:{cBuildingsX[i]},y:{cBuildingsY[i]}的家具未通过检测,丢弃该家具");
                     }
                 }
             }
         }
 
-        public void AddBuilding(string id,Vector2 grid,bool check)
+        public void AddBuildingWithChck(string id,Vector2 grid)
         {
-            if (check)
+            var buildingConfig = BuildingConfig.GetConfig(id);
+            if (buildingConfig != null)
             {
-                var buildingConfig = BuildingsConfig.GetConfig(id);
-                if (buildingConfig!=null)
+                if (!Check(grid, buildingConfig.Size))
                 {
-                    if (!Check(grid, buildingConfig.Size))
-                    {
-                        return;
-                    }
+                    Debuger.LogWarning($"id为:{id},位置为:x:{grid.x},y:{grid.y}的家具未通过检测,丢弃该家具");
+                    return;
                 }
             }
+            AddBuilding(id, grid);
+        }
+        public void AddBuilding(string id, int x, int y)
+        {
+            AddBuilding(id,new Vector2(x,y));
+        }
+        public void AddBuilding(string id, Vector2 grid)
+        {
             BuildingInSphereData d = new BuildingInSphereData();
             d.id = id;
             d.grid = grid;
             this.buildings.Add(d);
-        }
-
-        public void AddBuilding(string id, int x, int y,bool check=true)
-        {
-            AddBuilding(id,new Vector2(x,y), check);
-            var buildingConfig = BuildingsConfig.GetConfig(id);
-            SetMapHeight(x,y,buildingConfig.Size);
+            var buildingConfig = BuildingConfig.GetConfig(id);
+            SetMapHeight((int)grid.x, (int)grid.y, buildingConfig.Size);
         }
         public static Vector3 GetPositionByGrid(int x,int y)
         {

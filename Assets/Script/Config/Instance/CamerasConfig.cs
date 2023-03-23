@@ -2,9 +2,9 @@
 
 namespace Assets.Script.Config
 {
-    public class CamerasConfig:Config<CamerasConfig>
+    public class CamerasConfig: StaticConfig<CamerasConfig>
     {
-        public class CameraConfig:ConfigNode
+        public class CameraConfig:ConfigReader
         {
             private double[] _position;
 

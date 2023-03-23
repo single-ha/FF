@@ -2,53 +2,31 @@
 
 namespace Assets.Script.Config
 {
-    public class BackgroundsConfig : Config<BackgroundsConfig>
+    public class BackgroundsConfig : DynamicConfig
     {
-        public class BackgroundConfig : ConfigNode
+        public int id
         {
-            public int id
-            {
-                get { return ReadInt("id"); }
-            }
-
-
-            public string image_bg
-            {
-                get { return ReadStr("image_bg"); }
-            }
-
-
-            public string prefab_bg
-            {
-                get { return ReadStr("prefab_bg"); }
-            }
-        }
-        protected override void SetConfigName(ref string configName)
-        {
-            configName = "Backgrounds";
+            get { return ReadInt("id"); }
         }
 
-        private Dictionary<string, BackgroundConfig> backgrounds;
 
-        public Dictionary<string, BackgroundConfig> Backgrounds
+        public string image_bg
         {
-            get
-            {
-                ReadDictionary(ref backgrounds);
-                return backgrounds;
-            }
+            get { return ReadStr("image_bg"); }
         }
-        public static BackgroundConfig GetConfig(string id)
+
+
+        public string prefab_bg
         {
-            if (Inst.Backgrounds.ContainsKey(id))
-            {
-                return Inst.Backgrounds[id];
-            }
-            else
-            {
-                Debuger.LogError($"backgrounds 配置表中未配置id为{id}的background");
-                return null;
-            }
+            get { return ReadStr("prefab_bg"); }
+        }
+        public BackgroundsConfig(string configName) : base(configName)
+        {
+        }
+
+        public static BackgroundsConfig GetConfig(string s)
+        {
+            return new BackgroundsConfig(s);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿Shader "My/Cell"
+﻿Shader "FF/Cell"
 {
     Properties
     {

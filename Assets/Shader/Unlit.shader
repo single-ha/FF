@@ -1,4 +1,4 @@
-﻿Shader "My/Unlit/Unlit"
+﻿Shader "FF/Unlit/Unlit"
 {
     Properties
     {
@@ -12,7 +12,7 @@
         LOD 100
         Cull Off
         Lighting Off
-        ZWrite Off
+        // ZWrite Off
         Blend SrcAlpha OneMinusSrcAlpha
         Pass
         {
@@ -54,8 +54,8 @@
             half4 frag (v2f i) : SV_Target
             {
                 half4 col = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv);
-                _Color.a=col.a;
-                return _Color;
+                col*=_Color;
+                return col;
             }
             ENDHLSL
         }

@@ -22,7 +22,7 @@ namespace Assets.Script.UI
             StageManager.Inst.MainStage.Decorate("1");
             StageManager.Inst.MainStage.SetCamera("1");
             Sphere s = new Sphere();
-            s.SetSphereTemplate("6000");
+            s.SetSphereTemplate("20000");
             StageManager.Inst.MainStage.Show(s);
             // var loadingPanel = UIManager.Inst.OpenPanel<LoadingPanelPresenter, LoadingPanelView>();
         }

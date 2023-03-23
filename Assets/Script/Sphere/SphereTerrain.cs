@@ -10,7 +10,7 @@ namespace Assets.Script
         private int level;
         public int Level => level;
 
-        private TerrainsConfig.TerrainConfig config;
+        private TerrainConfig config;
         private GameObject _terrainObj;
 
         public GameObject TerrainObj
@@ -26,7 +26,7 @@ namespace Assets.Script
         public void AddTerrain(string id, int level)
         {
             this.level = level;
-            config = TerrainsConfig.GetTerrainConfig(id);
+            config = TerrainConfig.GetTerrainConfig(id);
             if (config != null)
             {
                 if (!string.IsNullOrEmpty(config.prefab_name))
