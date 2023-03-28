@@ -6,17 +6,17 @@ using UnityEngine.PlayerLoop;
 
 namespace Assets.Script
 {
-    public abstract class AnimBase
+    public abstract class ActionBase
     {
         protected Character character;
-        protected AnimController controller;
+        protected ActionController controller;
         public UnityAction exitAction;
-        public AnimBase(Character character)
+        public ActionBase(Character character)
         {
             this.character = character;
         }
 
-        public void SetController(AnimController con)
+        public void SetController(ActionController con)
         {
             this.controller = con;
         }

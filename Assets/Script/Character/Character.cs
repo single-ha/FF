@@ -23,7 +23,7 @@ namespace Assets.Script
         private CharacterConfig config;
         private CharacterSkinConfig skin;
         public NavMeshAgent agent;
-        private AnimController controller;
+        private ActionController controller;
         public Character(string id, int evo)
         {
             this.id = id;
@@ -39,7 +39,7 @@ namespace Assets.Script
             agent = root.GetComponent<NavMeshAgent>();
             var meshBuildSettings = NavMesh.GetSettingsByIndex(1);
             agent.agentTypeID = meshBuildSettings.agentTypeID;
-            controller = new AnimController();
+            controller = new ActionController();
             controller.AddAnim(CharacterAni.IDLE, new CharacterIdle(this));
             controller.AddAnim(CharacterAni.WALK, new CharacterWalk(this));
             controller.AddAnim(CharacterAni.LAY,new CharacterLay(this));

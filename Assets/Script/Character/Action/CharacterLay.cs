@@ -2,7 +2,7 @@
 
 namespace Assets.Script
 {
-    public class CharacterLay:AnimBase
+    public class CharacterLay:ActionBase
     {
         private double duration;
         private Coroutine cor;

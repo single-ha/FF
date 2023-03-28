@@ -4,7 +4,7 @@ using UnityEngine.Events;
 
 namespace Assets.Script
 {
-    public class CharacterWalk : AnimBase
+    public class CharacterWalk : ActionBase
     {
         private CharacterWalkData data;
 

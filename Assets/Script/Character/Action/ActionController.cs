@@ -5,21 +5,21 @@ using UnityEngine;
 
 namespace Assets.Script
 {
-    public class AnimController
+    public class ActionController
     {
-        private Dictionary<CharacterAni, AnimBase> anims;
-        private AnimBase curPlay;
+        private Dictionary<CharacterAni, ActionBase> anims;
+        private ActionBase curPlay;
         private Coroutine cor;
-        public AnimController()
+        public ActionController()
         {
-            anims = new Dictionary<CharacterAni, AnimBase>();
+            anims = new Dictionary<CharacterAni, ActionBase>();
             cor= GameMain.Inst.StartCoroutine(UpDate());
         }
 
-        public void AddAnim(CharacterAni key, AnimBase anim)
+        public void AddAnim(CharacterAni key, ActionBase action)
         {
-            anim.SetController(this);
-            anims[key] = anim;
+            action.SetController(this);
+            anims[key] = action;
         }
 
         public void Swith(CharacterAni key,object data=null)

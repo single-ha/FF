@@ -1,6 +1,6 @@
 ﻿namespace Assets.Script
 {
-    public class CharacterIdle:AnimBase
+    public class CharacterIdle:ActionBase
     {
         public CharacterIdle(Character character) : base(character)
         {
