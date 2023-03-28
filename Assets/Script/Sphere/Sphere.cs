@@ -29,6 +29,7 @@ namespace Assets.Script
         private SphereTerrain _terrain;
         private SphereTerrainMask terrainMask;
         private SphereBuildindgs _buildindgs;
+        private SphereCharacters _characters;
 
         public Sphere()
         {
@@ -66,11 +67,11 @@ namespace Assets.Script
             _terrain = new SphereTerrain(terrainRoot);
             terrainMask = new SphereTerrainMask(terrainRoot.gameObject, this);
             _buildindgs = new SphereBuildindgs(buildingRoot);
+            _characters = new SphereCharacters(characterRoot);
             spereEdtior = new SphereEditor();
 
            
         }
-
         public void EnableEditor()
         {
             spereEdtior.RegisterClick(EditorClick);
@@ -87,6 +88,13 @@ namespace Assets.Script
         private void EditorClick(GameObject arg1, Vector3 arg2)
         {
             // _buildindgs.SetBuilding(10001,arg2);
+            for (int i = 0; i < _characters.characters.Count; i++)
+            {
+                var pos = sphereMap.SampleRandomPostion();
+                CharacterWalk.CharacterWalkData d = new CharacterWalk.CharacterWalkData();
+                d.targetPos = SphereMap.GetPositionByGrid(pos);
+                _characters.characters[i].SwithState(CharacterAni.WALK, d);
+            }
         }
         /// <summary>
         /// 
@@ -100,27 +108,63 @@ namespace Assets.Script
                 sphereMap.Init(sphereConfig.Level);
                 var c = sphereConfig;
                 AddEarth(c.Earth,sphereConfig.Level);
+                AddBuildings(c.Buildings, c.Buildings_X, c.Buildings_Y,c.Buildings_R);
                 AddTerrain(c.Terrain, sphereConfig.Level);
-                AddBuildings(c.Buildings, c.Buildings_X, c.Buildings_Y);
-                EnableEditor();
+                AddCharacter(c.CharactersId, c.CharactersEvo);
             }
         }
-
-        public void AddBuildings(string[] cBuildings, int[] cBuildingsX, int[] cBuildingsY)
+        #region 精灵
+        private void AddCharacter(string[] cCharacterId, int[] cCharacterEvo)
         {
-            sphereMap.AddBuildings(cBuildings, cBuildingsX, cBuildingsY);
-            _buildindgs.AddBuildings(sphereMap.Buildings);
+            if (cCharacterId == null || cCharacterEvo == null || cCharacterId.Length != cCharacterEvo.Length)
+            {
+                return;
+            }
+
+            for (int i = 0; i < cCharacterId.Length; i++)
+            {
+                string id = cCharacterId[i];
+                int evo = cCharacterEvo[i];
+                var cha = AddCharacter(id, evo);
+            }
+        }
+        private Character AddCharacter(string cCharacterId, int cCharacterEvo)
+        {
+            Character character = new Character(cCharacterId, cCharacterEvo);
+            character.LoadModel();
+            _characters.AddCharacter(character,sphereMap.SampleRandomPostion());
+            return character;
         }
 
+        #endregion
+
+        #region 家具
+        public void AddBuildings(string[] cBuildings, int[] cBuildingsX, int[] cBuildingsY,int[] cBuildingsR)
+        {
+            sphereMap.AddBuildings(cBuildings, cBuildingsX, cBuildingsY, cBuildingsR);
+            ShowBuildings();
+        }
+        public void ShowBuildings()
+        {
+            _buildindgs.ShowBuildings(sphereMap.Buildings);
+        }
+        #endregion
+
+        #region 地面
         public void AddTerrain(string id, int level)
         {
             _terrain.AddTerrain(id, level);
         }
+        #endregion
 
+        #region earth
         public void AddEarth(string id, int level)
         {
-            _earth.AddEarth(id,level);
+            _earth.AddEarth(id, level);
         }
+
+        #endregion
+
         public void SetCellVisible(bool visible)
         {
             if (visible)

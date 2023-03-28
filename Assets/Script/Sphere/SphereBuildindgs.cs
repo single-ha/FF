@@ -7,35 +7,27 @@ namespace Assets.Script
 {
     public class SphereBuildindgs:SphereComponent
     {
-        private Dictionary<string, GameObject> buildings;
+        private List<BuildingInSphere> buildings;
         public SphereBuildindgs(Transform root) : base(root)
         {
-            buildings = new Dictionary<string, GameObject>();
-        }
-        public void AddBuilding(string id, Vector2 grid)
-        {
-            AddBuilding(id,(int)grid.x, (int)grid.y);
-        }
-        public void AddBuilding(string id, int x,int y)
-        {
-            var buildingConfig = BuildingConfig.GetConfig(id);
-            if (buildingConfig==null)
-            {
-                return;
-            }
-            string path = $"{buildingConfig.Prefab}.prefab";
-            GameObject o = ResManager.Inst.Load<GameObject>(path);
-            GameObject building = GameObject.Instantiate(o, this.root);
-            building.transform.position = SphereMap.GetPositionByGrid(x, y);
-            // buildings[$"{x}_{y}"] = building;
+            buildings = new List<BuildingInSphere>();
         }
 
-        public void AddBuildings(List<BuildingInSphereData> sphereMapBuildings)
+        public void ShowBuilding(BuildingInSphere building)
+        {
+            building.Show();
+            building.root.transform.SetParent(this.root);
+            building.root.transform.position = SphereMap.GetPositionByGrid(building.grid);
+            building.root.transform.localRotation=Quaternion.Euler(0,building.rotation,0);
+            building.SetNavObstacle();
+            buildings.Add(building);
+        }
+        public void ShowBuildings(List<BuildingInSphere> sphereMapBuildings)
         {
             for (int i = 0; i < sphereMapBuildings.Count; i++)
             {
                 var d = sphereMapBuildings[i];
-                AddBuilding(d.id, d.grid);
+                ShowBuilding(d);
             }
         }
     }

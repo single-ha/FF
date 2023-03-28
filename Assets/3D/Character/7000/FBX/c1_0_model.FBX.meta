@@ -1,0 +1,316 @@
+fileFormatVersion: 2
+guid: 31043a9534b71544d836a0a90d1f4783
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: Bip001
+    100002: Bip001 Head
+    100004: Bip001 L Calf
+    100006: Bip001 L Clavicle
+    100008: Bip001 L Finger0
+    100010: Bip001 L Finger01
+    100012: Bip001 L Finger1
+    100014: Bip001 L Finger11
+    100016: Bip001 L Finger2
+    100018: Bip001 L Finger21
+    100020: Bip001 L Finger3
+    100022: Bip001 L Finger31
+    100024: Bip001 L Finger4
+    100026: Bip001 L Finger41
+    100028: Bip001 L Foot
+    100030: Bip001 L Forearm
+    100032: Bip001 L Hand
+    100034: Bip001 L Thigh
+    100036: Bip001 L Toe0
+    100038: Bip001 L UpperArm
+    100040: Bip001 Neck
+    100042: Bip001 Pelvis
+    100044: Bip001 Prop1
+    100046: Bip001 Prop2
+    100048: Bip001 R Calf
+    100050: Bip001 R Clavicle
+    100052: Bip001 R Finger0
+    100054: Bip001 R Finger01
+    100056: Bip001 R Finger1
+    100058: Bip001 R Finger11
+    100060: Bip001 R Finger2
+    100062: Bip001 R Finger21
+    100064: Bip001 R Finger3
+    100066: Bip001 R Finger31
+    100068: Bip001 R Finger4
+    100070: Bip001 R Finger41
+    100072: Bip001 R Foot
+    100074: Bip001 R Forearm
+    100076: Bip001 R Hand
+    100078: Bip001 R Thigh
+    100080: Bip001 R Toe0
+    100082: Bip001 R UpperArm
+    100084: Bip001 Spine
+    100086: Bip001 Spine1
+    100088: Bip001 Spine2
+    100090: brow01
+    100092: brow02
+    100094: //RootNode
+    100096: checkred
+    100098: cloth
+    100100: dress_all
+    100102: eye01
+    100104: eye02
+    100106: hair
+    100108: mouth
+    100110: nose
+    100112: piaochong0_cloth_01
+    100114: piaochong0_cloth_02
+    100116: piaochong0_cloth_03
+    100118: piaochong0_cloth_04
+    100120: piaochong0_cloth_05
+    100122: piaochong0_cloth_06
+    100124: piaochong0_cloth_07
+    100126: piaochong0_cloth_08
+    100128: piaochong0_cloth_09
+    100130: piaochong0_cloth_10
+    100132: piaochong0_cloth_11
+    100134: piaochong0_dress_01
+    100136: piaochong0_dress_02
+    100138: piaochong0_dress_03
+    100140: piaochong0_dress_04
+    100142: piaochong0_dress_05
+    100144: piaochong0_dress_06
+    100146: piaochong0_dress_07
+    100148: piaochong0_dress_08
+    100150: piaochong0_dress_09
+    100152: piaochong0_dress_10
+    100154: piaochong0_dress_11
+    100156: piaochong0_dress_12
+    100158: piaochong0_dress_13
+    100160: piaochong0_dress_14
+    100162: piaochong0_dress_15
+    100164: piaochong0_dress_16
+    100166: piaochong0_hair_01
+    100168: piaochong0_hair_02
+    100170: piaochong0_hair_03
+    100172: piaochong0_hair_04
+    100174: piaochong0_hair_05
+    100176: piaochong0_hair_06
+    100178: piaochong0_hair_07
+    100180: piaochong0_hair_08
+    100182: piaochong0_hair_09
+    100184: piaochong0_hair_10
+    100186: piaochong0_hair_all
+    100188: skin
+    100190: wings_in
+    100192: wings_out
+    400000: Bip001
+    400002: Bip001 Head
+    400004: Bip001 L Calf
+    400006: Bip001 L Clavicle
+    400008: Bip001 L Finger0
+    400010: Bip001 L Finger01
+    400012: Bip001 L Finger1
+    400014: Bip001 L Finger11
+    400016: Bip001 L Finger2
+    400018: Bip001 L Finger21
+    400020: Bip001 L Finger3
+    400022: Bip001 L Finger31
+    400024: Bip001 L Finger4
+    400026: Bip001 L Finger41
+    400028: Bip001 L Foot
+    400030: Bip001 L Forearm
+    400032: Bip001 L Hand
+    400034: Bip001 L Thigh
+    400036: Bip001 L Toe0
+    400038: Bip001 L UpperArm
+    400040: Bip001 Neck
+    400042: Bip001 Pelvis
+    400044: Bip001 Prop1
+    400046: Bip001 Prop2
+    400048: Bip001 R Calf
+    400050: Bip001 R Clavicle
+    400052: Bip001 R Finger0
+    400054: Bip001 R Finger01
+    400056: Bip001 R Finger1
+    400058: Bip001 R Finger11
+    400060: Bip001 R Finger2
+    400062: Bip001 R Finger21
+    400064: Bip001 R Finger3
+    400066: Bip001 R Finger31
+    400068: Bip001 R Finger4
+    400070: Bip001 R Finger41
+    400072: Bip001 R Foot
+    400074: Bip001 R Forearm
+    400076: Bip001 R Hand
+    400078: Bip001 R Thigh
+    400080: Bip001 R Toe0
+    400082: Bip001 R UpperArm
+    400084: Bip001 Spine
+    400086: Bip001 Spine1
+    400088: Bip001 Spine2
+    400090: brow01
+    400092: brow02
+    400094: //RootNode
+    400096: checkred
+    400098: cloth
+    400100: dress_all
+    400102: eye01
+    400104: eye02
+    400106: hair
+    400108: mouth
+    400110: nose
+    400112: piaochong0_cloth_01
+    400114: piaochong0_cloth_02
+    400116: piaochong0_cloth_03
+    400118: piaochong0_cloth_04
+    400120: piaochong0_cloth_05
+    400122: piaochong0_cloth_06
+    400124: piaochong0_cloth_07
+    400126: piaochong0_cloth_08
+    400128: piaochong0_cloth_09
+    400130: piaochong0_cloth_10
+    400132: piaochong0_cloth_11
+    400134: piaochong0_dress_01
+    400136: piaochong0_dress_02
+    400138: piaochong0_dress_03
+    400140: piaochong0_dress_04
+    400142: piaochong0_dress_05
+    400144: piaochong0_dress_06
+    400146: piaochong0_dress_07
+    400148: piaochong0_dress_08
+    400150: piaochong0_dress_09
+    400152: piaochong0_dress_10
+    400154: piaochong0_dress_11
+    400156: piaochong0_dress_12
+    400158: piaochong0_dress_13
+    400160: piaochong0_dress_14
+    400162: piaochong0_dress_15
+    400164: piaochong0_dress_16
+    400166: piaochong0_hair_01
+    400168: piaochong0_hair_02
+    400170: piaochong0_hair_03
+    400172: piaochong0_hair_04
+    400174: piaochong0_hair_05
+    400176: piaochong0_hair_06
+    400178: piaochong0_hair_07
+    400180: piaochong0_hair_08
+    400182: piaochong0_hair_09
+    400184: piaochong0_hair_10
+    400186: piaochong0_hair_all
+    400188: skin
+    400190: wings_in
+    400192: wings_out
+    2100000: 'Material #11689'
+    2100002: 19 - Default
+    2100004: 'Material #11690'
+    2100006: 'Material #11688'
+    2100008: 'Material #11687'
+    4300000: wings_out
+    4300002: wings_in
+    4300004: hair
+    4300006: mouth
+    4300008: eye02
+    4300010: nose
+    4300012: checkred
+    4300014: brow01
+    4300016: skin
+    4300018: eye01
+    4300020: brow02
+    4300022: cloth
+    9500000: //RootNode
+    13700000: brow01
+    13700002: brow02
+    13700004: checkred
+    13700006: cloth
+    13700008: eye01
+    13700010: eye02
+    13700012: hair
+    13700014: mouth
+    13700016: nose
+    13700018: skin
+    13700020: wings_in
+    13700022: wings_out
+    2186277476908879412: ImportLogs
+  externalObjects: {}
+  materials:
+    importMaterials: 0
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 0
+    importBlendShapes: 0
+    importCameras: 0
+    importLights: 0
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 0.0254
+    hasPreviousCalculatedGlobalScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 2
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  importAnimation: 0
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -10,7 +10,7 @@ namespace Assets.Script.Config
     public class ConfigReader
     {
         private JsonData json;
-        public void SetJson(JsonData json)
+        public virtual void SetJson(JsonData json)
         {
             this.json = json;
         }
@@ -92,6 +92,11 @@ namespace Assets.Script.Config
         }
         public void ReadArray(ref int[] arr, string key=null)
         {
+            if (!json.ContainsKey(key))
+            {
+                Debuger.LogError($"配置中不包含key({key})");
+                return;
+            }
             JsonData t =string.IsNullOrEmpty(key)?json:json[key];
             if (arr==null||arr.Length!=t.Count)
             {
@@ -105,6 +110,11 @@ namespace Assets.Script.Config
         }
         public void ReadArray(ref double[] arr, string key = null)
         {
+            if (!json.ContainsKey(key))
+            {
+                Debuger.LogError($"配置中不包含key({key})");
+                return;
+            }
             JsonData t = string.IsNullOrEmpty(key) ? json : json[key];
             if (arr == null || arr.Length != t.Count)
             {
@@ -118,6 +128,11 @@ namespace Assets.Script.Config
         }
         public void ReadArray(ref string[] arr, string key = null)
         {
+            if (!json.ContainsKey(key))
+            {
+                Debuger.LogError($"配置中不包含key({key})");
+                return;
+            }
             JsonData t = string.IsNullOrEmpty(key) ? json : json[key];
             if (arr == null || arr.Length != t.Count)
             {
@@ -131,6 +146,11 @@ namespace Assets.Script.Config
         }
         public void ReadArray(ref bool[] arr, string key = null)
         {
+            if (!json.ContainsKey(key))
+            {
+                Debuger.LogError($"配置中不包含key({key})");
+                return;
+            }
             JsonData t = string.IsNullOrEmpty(key) ? json : json[key];
             if (arr == null || arr.Length != t.Count)
             {

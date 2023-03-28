@@ -39,7 +39,7 @@ namespace Assets.Script.Config
             LoadConfig();
         }
 
-        protected void SetJson(JsonData json)
+        public override void SetJson(JsonData json)
         {
             base.SetJson(json);
             SetDirty(true);

@@ -55,6 +55,36 @@ namespace Assets.Script.Config
             }
         }
 
+        private int[] buildings_r;
+
+        public int[] Buildings_R
+        {
+            get
+            {
+                ReadArray(ref buildings_r, "buildings_r");
+                return buildings_r;
+            }
+        }
+        private string[] characters_id;
+
+        public string[] CharactersId
+        {
+            get
+            {
+                ReadArray(ref characters_id, "characters_id");
+                return characters_id;
+            }
+        }
+        private int[] characters_evo;
+
+        public int[] CharactersEvo
+        {
+            get
+            {
+                ReadArray(ref characters_evo, "characters_evo");
+                return characters_evo;
+            }
+        }
         public static SphereConfig GetConfig(string id)
         {
             return new SphereConfig(id);

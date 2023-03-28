@@ -24,6 +24,7 @@ namespace Assets.Script.UI
             Sphere s = new Sphere();
             s.SetSphereTemplate("20000");
             StageManager.Inst.MainStage.Show(s);
+            s.EnableEditor();
             // var loadingPanel = UIManager.Inst.OpenPanel<LoadingPanelPresenter, LoadingPanelView>();
         }
     }

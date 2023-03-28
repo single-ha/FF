@@ -1,6 +1,7 @@
 ﻿using Assets.Script.Config;
 using Assets.Script.Manager;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace Assets.Script
 {
@@ -38,13 +39,23 @@ namespace Assets.Script
                 var material = ResManager.Inst.Load<Material>($"{config.material}.mat");
                 AddTerrainMaterial(material);
                 _terrainObj.SetLayer(LayerMask.NameToLayer("Terrain"));
+                //烘培
+                BackNavMesh();
             }
             else
             {
                 Debuger.LogError($"terrains中没有id为{id}的配置");
             }
         }
-
+        /// <summary>
+        /// 烘培导航网格
+        /// </summary>
+        public void BackNavMesh()
+        {
+            NavMeshSurface navMesh = _terrainObj.GetComponentInChildren<NavMeshSurface>();
+            navMesh.RemoveData();
+            navMesh.BuildNavMesh();
+        }
         private void AddTerrainMaterial(Material m)
         {
             Tool.ClearChild(this.root);

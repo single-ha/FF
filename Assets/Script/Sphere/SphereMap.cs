@@ -9,7 +9,7 @@ namespace Assets.Script
         /// <summary>
         /// 家具的单位长度是地图单位长度的几倍
         /// </summary>
-        public const int PRE = 2;
+        private const int PRE = 2;
         /// <summary>
         /// 单位格子大小
         /// </summary>
@@ -21,17 +21,20 @@ namespace Assets.Script
 
         private int diameter;
         public int Diameter => diameter;
+        /// <summary>
+        /// 地图高度<x,<y,高度>> 中心为(0,0)
+        /// </summary>
         private Dictionary<int, Dictionary<int, int>> mapHeight;
 
         public Dictionary<int, Dictionary<int, int>> MapHeight => mapHeight;
 
-        private List<BuildingInSphereData> buildings;
+        private List<BuildingInSphere> buildings;
 
-        public List<BuildingInSphereData> Buildings => buildings;
+        public List<BuildingInSphere> Buildings => buildings;
 
         public SphereMap()
         {
-            buildings = new List<BuildingInSphereData>();
+            buildings = new List<BuildingInSphere>();
             mapHeight = new Dictionary<int, Dictionary<int, int>>();
         }
 
@@ -162,18 +165,18 @@ namespace Assets.Script
             var s = Vector3.Distance(pos, Vector3.zero);
             return 2 * s <= diameter;
         }
-        public void AddBuildings(string[] cBuildings, int[] cBuildingsX, int[] cBuildingsY)
+        public void AddBuildings(string[] cBuildings, int[] cBuildingsX, int[] cBuildingsY,int[] cBuildingsR)
         {
             int length = cBuildings.Length;
             for (int i = 0; i < length; i++)
             {
                 var id = cBuildings[i];
-                var buildingConfig = BuildingConfig.GetConfig(id);
+                var buildingConfig = new BuildingConfig(id);
                 if (buildingConfig!=null)
                 {
-                    if (Check(cBuildingsX[i],cBuildingsY[i],buildingConfig.Size))
+                    if (Check(cBuildingsX[i],cBuildingsY[i], buildingConfig.GetSize_Ration(cBuildingsR[i])))
                     {
-                        AddBuilding(id, cBuildingsX[i], cBuildingsY[i]);
+                        AddBuilding(id, cBuildingsX[i], cBuildingsY[i], cBuildingsR[i]);
                     }
                     else
                     {
@@ -183,32 +186,41 @@ namespace Assets.Script
             }
         }
 
-        public void AddBuildingWithChck(string id,Vector2 grid)
+        public void AddBuildingWithChck(string id,Vector2 grid,int rotation)
         {
-            var buildingConfig = BuildingConfig.GetConfig(id);
+            var buildingConfig =new BuildingConfig(id);
             if (buildingConfig != null)
             {
-                if (!Check(grid, buildingConfig.Size))
+                if (!Check(grid, buildingConfig.GetSize_Ration(rotation)))
                 {
                     Debuger.LogWarning($"id为:{id},位置为:x:{grid.x},y:{grid.y}的家具未通过检测,丢弃该家具");
                     return;
                 }
             }
-            AddBuilding(id, grid);
+            AddBuilding(id, grid, rotation);
         }
-        public void AddBuilding(string id, int x, int y)
+        public void AddBuilding(string id, int x, int y,int rotation)
         {
-            AddBuilding(id,new Vector2(x,y));
+            AddBuilding(id,new Vector2(x,y), rotation);
         }
-        public void AddBuilding(string id, Vector2 grid)
+        public void AddBuilding(string id, Vector2 grid,int rotation)
         {
-            BuildingInSphereData d = new BuildingInSphereData();
-            d.id = id;
-            d.grid = grid;
-            this.buildings.Add(d);
-            var buildingConfig = BuildingConfig.GetConfig(id);
-            SetMapHeight((int)grid.x, (int)grid.y, buildingConfig.Size);
+            BuildingInSphere b = new BuildingInSphere(id);
+            b.grid = grid;
+            b.rotation = rotation;
+            this.buildings.Add(b);
+            SetMapHeight((int)grid.x, (int)grid.y, b.config.GetSize_Ration(rotation));
         }
+
+        public Vector2 SampleRandomPostion()
+        {
+            var radius = diameter / 2.0f;
+            var length =Mathf.FloorToInt(radius / SphereMap.SphereCell);
+            int x = Random.Range(-length-1, length+1);
+            int y = Random.Range(-length - 1, length + 1);
+            return new Vector2(x, y);
+        }
+
         public static Vector3 GetPositionByGrid(int x,int y)
         {
 

@@ -1,5 +1,7 @@
-﻿using System.ComponentModel.Design.Serialization;
+﻿using System.Collections;
+using System.ComponentModel.Design.Serialization;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Assets.Script
 {
@@ -88,6 +90,23 @@ namespace Assets.Script
                 var g = gameObject.transform.GetChild(i);
                 SetLayer(g.gameObject, layer);
             }
+        }
+
+        public static Coroutine DelayAction(double duration, UnityAction action)
+        {
+            Coroutine result = GameMain.Inst.StartCoroutine(Delay(duration, action));
+            return result;
+        }
+
+        private static IEnumerator Delay(double duration, UnityAction action)
+        {
+            yield return new WaitForSecondsRealtime((float)duration);
+            action?.Invoke();
+        }
+
+        public static void StopDelayAction(Coroutine coroutine)
+        {
+            GameMain.Inst.StopCoroutine(coroutine);
         }
     }
 }

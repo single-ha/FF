@@ -53,10 +53,14 @@ namespace Assets.Script.Config
                 return new Vector3(Size_X, Size_Y, Size_Z);
             }
         }
-
-        public static BuildingConfig GetConfig(string id)
+        public Vector3 GetSize_Ration(int rotation)
         {
-            return new BuildingConfig(id);
+            if (rotation / 90 % 2 == 1)
+            {
+                Vector3 result = new Vector3(Size_Z, Size_Y, Size_X);
+                return result;
+            }
+            return Size;
         }
 
         public BuildingConfig(string configName) : base(configName)
