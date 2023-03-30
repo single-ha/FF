@@ -124,7 +124,7 @@ namespace Assets.Script
 
         public void SetCameraPostion(double[] postion)
         {
-            this.camera.transform.position = Tool.Array2V3(postion);
+            this.camera.transform.localPosition = Tool.Array2V3(postion);
         }
 
         public void SetCameraRotation(double[] rotation)

@@ -22,7 +22,7 @@ namespace Assets.Script
                 return sphereMap.level;
             }
         }
-        private SphereMap sphereMap;
+        public SphereMap sphereMap;
 
         private SphereEditor spereEdtior;
         private SphereEarth _earth;
@@ -88,13 +88,6 @@ namespace Assets.Script
         private void EditorClick(GameObject arg1, Vector3 arg2)
         {
             // _buildindgs.SetBuilding(10001,arg2);
-            for (int i = 0; i < _characters.characters.Count; i++)
-            {
-                var pos = sphereMap.SampleRandomPostion();
-                CharacterWalk.CharacterWalkData d = new CharacterWalk.CharacterWalkData();
-                d.targetPos = SphereMap.GetPositionByGrid(pos);
-                _characters.characters[i].SwithState(CharacterAni.WALK, d);
-            }
         }
         /// <summary>
         /// 
@@ -125,12 +118,13 @@ namespace Assets.Script
             {
                 string id = cCharacterId[i];
                 int evo = cCharacterEvo[i];
-                var cha = AddCharacter(id, evo);
+                AddCharacter(id, evo);
             }
         }
         private Character AddCharacter(string cCharacterId, int cCharacterEvo)
         {
             Character character = new Character(cCharacterId, cCharacterEvo);
+            character.SetSphere(this);
             character.LoadModel();
             _characters.AddCharacter(character,sphereMap.SampleRandomPostion());
             return character;

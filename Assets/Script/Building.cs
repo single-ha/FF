@@ -11,6 +11,7 @@ namespace Assets.Script
         public BuildingConfig config;
 
         public GameObject root;
+        public Transform f;
         public Building(string id)
         {
             this.id = id;
@@ -24,6 +25,7 @@ namespace Assets.Script
                 string path = $"{config.Prefab}.prefab";
                 GameObject o = ResManager.Inst.Load<GameObject>(path);
                 root = GameObject.Instantiate(o);
+                f = root.transform.Find("f");
             }
             else
             {

@@ -6,24 +6,26 @@ using UnityEngine.Playables;
 
 namespace Assets.Script
 {
-    public enum CharacterAni
+    public enum CharacterActionType
     {
         IDLE,
         WALK,
         LAY,
+        RUN,
+        SIT,
     }
 
     public class Character
     {
         private string id;
         private int evo;
+        public Sphere sphere;
+        public NavMeshAgent agent;
 
         public GameObject root;
-        public bool ai;
         private CharacterConfig config;
         private CharacterSkinConfig skin;
-        public NavMeshAgent agent;
-        private ActionController controller;
+        public CharacterAI characterAi;
         public Character(string id, int evo)
         {
             this.id = id;
@@ -36,23 +38,25 @@ namespace Assets.Script
         {
             GameObject obj = ResManager.Inst.Load<GameObject>($"{skin.prefab}.prefab");
             root = GameObject.Instantiate(obj);
+            InitAI();
+        }
+
+        private void InitAI()
+        {
             agent = root.GetComponent<NavMeshAgent>();
             var meshBuildSettings = NavMesh.GetSettingsByIndex(1);
             agent.agentTypeID = meshBuildSettings.agentTypeID;
-            controller = new ActionController();
-            controller.AddAnim(CharacterAni.IDLE, new CharacterIdle(this));
-            controller.AddAnim(CharacterAni.WALK, new CharacterWalk(this));
-            controller.AddAnim(CharacterAni.LAY,new CharacterLay(this));
-            controller.Swith(CharacterAni.IDLE);
+            characterAi = new CharacterAI(this);
+            characterAi.AddAIBase(CharacterAIType.RUNAROUND,new RunAround());
+            characterAi.AddAIBase(CharacterAIType.WALKAROUND,new WalkAround());
+            characterAi.AddAIBase(CharacterAIType.IDLE,new IdleBehaviour());
+            characterAi.AddAIBase(CharacterAIType.PLAYWITHBUILDING, new PlayWithBuilding());
         }
+
 
         public void SetAI(bool enable)
         {
-            if (agent==null)
-            {
-                return;
-            }
-            agent.enabled = enable;
+            characterAi.SetEnable(enable);
         }
         public void SetParent(GameObject parent)
         {
@@ -66,9 +70,9 @@ namespace Assets.Script
             root.transform.localScale=Vector3.one;
         }
 
-        public void SwithState(CharacterAni state, object data=null)
+        public void SetSphere(Sphere sphere)
         {
-            controller.Swith(state,data);
+            this.sphere = sphere;
         }
         public double PlayAni(string ani,bool loop)
         {
@@ -115,15 +119,11 @@ namespace Assets.Script
                 return;
             }
             GameObject.Destroy(this.root);
-            controller.DisEnable();
+            characterAi.Destory();
         }
         public void Warp(Vector3 pos)
         {
-            if (agent==null)
-            {
-                return;
-            }
-            agent.Warp(pos);
+            characterAi.Warp(pos);
         }
     }
 }

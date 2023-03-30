@@ -18,7 +18,7 @@ namespace Assets.Script.Animation.Character.Dynamic
             playable.ConnectInput(0, mixerPlayable, 0);
         }
 
-        public void Init(AnimationClip bipedAnimClip, AnimationClip boneAnimClip, AnimationClip emotionAnimClip)
+        public void Init(AnimationClip bipedAnimClip, AnimationClip boneAnimClip, AnimationClip emotionAnimClip,bool isPlayBackwards)
         {
             var clip0 = AnimationClipPlayable.Create(playableGraph, bipedAnimClip);
             var clip1 = AnimationClipPlayable.Create(playableGraph, boneAnimClip);
@@ -29,6 +29,10 @@ namespace Assets.Script.Animation.Character.Dynamic
             mixerPlayable.SetInputWeight(0, 1);
             mixerPlayable.SetInputWeight(1, 1);
             mixerPlayable.SetInputWeight(2, 1);
+            if (isPlayBackwards)
+            {
+                mixerPlayable.SetSpeed(-1);
+            }
         }
     }
 }

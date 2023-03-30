@@ -53,6 +53,16 @@ namespace Assets.Script.Config
                 return new Vector3(Size_X, Size_Y, Size_Z);
             }
         }
+
+        private string[] actions;
+        public string[] Actions
+        {
+            get
+            {
+                ReadArray(ref actions, "actions");
+                return actions;
+            }
+        }
         public Vector3 GetSize_Ration(int rotation)
         {
             if (rotation / 90 % 2 == 1)

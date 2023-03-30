@@ -15,6 +15,7 @@ MonoBehaviour:
   bipedAnimClip: {fileID: 7400000, guid: 5040669a50e6b094dbddd31184bf408d, type: 2}
   boneAnimClip: {fileID: 7400000, guid: 461fc00ffd3a2e148a322ca057ca35b3, type: 2}
   emotionAnimClip: {fileID: 7400000, guid: d0aa078dc6de4d448a5c935c24a624c6, type: 2}
+  isPlayBackwards: 1
 --- !u!114 &-7539191455535684633
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -40,7 +41,7 @@ MonoBehaviour:
     m_Start: 0
     m_ClipIn: 0
     m_Asset: {fileID: -7991867633439790170}
-    m_Duration: 3.033333333333333
+    m_Duration: 1.867
     m_TimeScale: 1
     m_ParentTrack: {fileID: -7539191455535684633}
     m_EaseInDuration: 0
@@ -165,3 +166,4 @@ MonoBehaviour:
   bipedAnimClip: {fileID: 7400000, guid: 4887f4a65d2bdb44ca6af08ec60dfe80, type: 2}
   boneAnimClip: {fileID: 0}
   emotionAnimClip: {fileID: 7400000, guid: 59b95faf04e37fe4fb4cb4b1d873f09d, type: 2}
+  isPlayBackwards: 0

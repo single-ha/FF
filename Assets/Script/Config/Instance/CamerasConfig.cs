@@ -18,7 +18,9 @@ namespace Assets.Script.Config
             }
 
             private double[] _rotation;
-
+            /// <summary>
+            /// 摄像机Anchor的旋转角度
+            /// </summary>
             public double[] rotation
             {
                 get
