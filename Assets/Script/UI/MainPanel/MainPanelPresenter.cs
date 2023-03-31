@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Assets.Script.Config;
 using Assets.Script.Manager;
 
 namespace Assets.Script.UI
@@ -22,7 +21,7 @@ namespace Assets.Script.UI
             StageManager.Inst.MainStage.Decorate("1");
             StageManager.Inst.MainStage.SetCamera("1");
             Sphere s = new Sphere();
-            s.SetSphereTemplate("20000");
+            s.SetSphere("20000");
             StageManager.Inst.MainStage.Show(s);
             // s.EnableEditor();
             // var loadingPanel = UIManager.Inst.OpenPanel<LoadingPanelPresenter, LoadingPanelView>();

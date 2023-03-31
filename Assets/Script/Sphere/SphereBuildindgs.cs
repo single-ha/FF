@@ -1,16 +1,14 @@
 ﻿using System.Collections.Generic;
-using Assets.Script.Config;
-using Assets.Script.Manager;
 using UnityEngine;
 
 namespace Assets.Script
 {
     public class SphereBuildindgs:SphereComponent
     {
-        private List<BuildingInSphere> buildings;
+        private Dictionary<GameObject,BuildingInSphere> buildings;
         public SphereBuildindgs(Transform root) : base(root)
         {
-            buildings = new List<BuildingInSphere>();
+            buildings = new Dictionary<GameObject, BuildingInSphere>();
         }
 
         public void ShowBuilding(BuildingInSphere building)
@@ -19,8 +17,9 @@ namespace Assets.Script
             building.root.transform.SetParent(this.root);
             building.root.transform.position = SphereMap.GetPositionByGrid(building.grid);
             building.root.transform.localRotation=Quaternion.Euler(0,building.rotation,0);
-            building.SetNavObstacle();
-            buildings.Add(building);
+            building.SetNavObstacleAndCollider();
+            building.SetLayer("Building");
+            buildings[building.root]=building;
         }
         public void ShowBuildings(List<BuildingInSphere> sphereMapBuildings)
         {

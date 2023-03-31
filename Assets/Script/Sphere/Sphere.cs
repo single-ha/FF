@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Assets.Script.Config;
+using Assets.Script.Data;
 using Assets.Script.Manager;
 using UnityEngine;
 
@@ -25,12 +25,15 @@ namespace Assets.Script
         public SphereMap sphereMap;
 
         private SphereEditor spereEdtior;
-        private SphereEarth _earth;
-        private SphereTerrain _terrain;
-        private SphereTerrainMask terrainMask;
+        private SphereRoof roof;
         private SphereBuildindgs _buildindgs;
         private SphereCharacters _characters;
-
+        private SphereCover _cover;
+        private SphereWall wall;
+        private SphereTerrain _terrain;
+        private SphereRing _ring;
+        private SphereEarth _earth;
+        private SphereTerrainMask terrainMask;
         public Sphere()
         {
             Init();
@@ -55,7 +58,7 @@ namespace Assets.Script
 
             var roofRoot = Tool.GetComponent<Transform>(root, "roofRoot");
             var wallRoot = Tool.GetComponent<Transform>(root, "wallRoot");
-            var glassRoot = Tool.GetComponent<Transform>(root, "glassRoot");
+            var coverRoot = Tool.GetComponent<Transform>(root, "coverRoot");
             var buildingRoot = Tool.GetComponent<Transform>(root, "buildingRoot");
             var characterRoot = Tool.GetComponent<Transform>(root, "characterRoot");
             var floorRoot = Tool.GetComponent<Transform>(root, "floorRoot");
@@ -63,49 +66,103 @@ namespace Assets.Script
             var terrainRoot = Tool.GetComponent<Transform>(root, "terrainRoot");
             var earthRoot = Tool.GetComponent<Transform>(root, "earthRoot");
             sphereMap = new SphereMap();
-            _earth = new SphereEarth(earthRoot);
-            _terrain = new SphereTerrain(terrainRoot);
-            terrainMask = new SphereTerrainMask(terrainRoot.gameObject, this);
+            roof = new SphereRoof(roofRoot);
             _buildindgs = new SphereBuildindgs(buildingRoot);
             _characters = new SphereCharacters(characterRoot);
+            _cover = new SphereCover(coverRoot);
+             wall = new SphereWall(wallRoot);
+            _terrain = new SphereTerrain(terrainRoot);
+            _ring = new SphereRing(ringRoot);
+            _earth = new SphereEarth(earthRoot);
+            terrainMask = new SphereTerrainMask(terrainRoot.gameObject, this);
             spereEdtior = new SphereEditor();
-
-           
+            spereEdtior.RegisterClick(OnClickTerrainOrBuilding);
+            spereEdtior.SetLayerMask(LayerMask.GetMask("Building"));
+            spereEdtior.Enable = true;
         }
         public void EnableEditor()
         {
-            spereEdtior.RegisterClick(EditorClick);
-            spereEdtior.Enable = true;
             SetCellVisible(true);
         }
 
         public void DisEnableEditor()
         {
-            spereEdtior.RemoveClick(EditorClick);
-            spereEdtior.Enable = false;
             SetCellVisible(false);
         }
-        private void EditorClick(GameObject arg1, Vector3 arg2)
+
+        private int count;
+        private void OnClickTerrainOrBuilding(GameObject arg1, Vector3 arg2)
         {
-            // _buildindgs.SetBuilding(10001,arg2);
+            count++;
+            if (count % 2 == 1)
+            {
+                EnableEditor();
+                var pos = arg1.transform.localPosition;
+                pos.y += 0.5f;
+                arg1.transform.localPosition = pos;
+                for (int i = 0; i < _characters.characters.Count; i++)
+                {
+                    _characters.characters[i].DisEnable();
+                }
+            }
+            else
+            {
+                DisEnableEditor();
+                var pos = arg1.transform.localPosition;
+                pos.y -= 0.5f;
+                arg1.transform.localPosition = pos;
+                for (int i = 0; i < _characters.characters.Count; i++)
+                {
+                    _characters.characters[i].Enable();
+                }
+            }
+
         }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="id">sphere配置中的id</param>
-        public void SetSphereTemplate(string id)
+        public void SetSphere(string id)
         {
-            var sphereConfig = SphereConfig.GetConfig(id);
-            if (sphereConfig!=null)
+            var sphereConfig = new SphereConfig(id);
+            SetSphere(sphereConfig);
+        }
+        public void SetSphere(SphereTemplate sphereTemplate)
+        {
+            if (sphereTemplate != null)
             {
-                sphereMap.Init(sphereConfig.Level);
-                var c = sphereConfig;
-                AddEarth(c.Earth,sphereConfig.Level);
-                AddBuildings(c.Buildings, c.Buildings_X, c.Buildings_Y,c.Buildings_R);
-                AddTerrain(c.Terrain, sphereConfig.Level);
+                sphereMap.Init(sphereTemplate.Level);
+                var c = sphereTemplate;
+                AddEarth(c.Earth, c.Level);
+                AddBuildings(c.Buildings, c.Buildings_X, c.Buildings_Y, c.Buildings_R);
+                AddTerrain(c.Terrain, c.Level);
                 AddCharacter(c.CharactersId, c.CharactersEvo);
+                AddCover(c.cover,c.Level);
+                AddRing(c.ring, c.Level);
+                AddRoof(c.roof, c.Level);
+                AddWall(c.wall, c.Level);
             }
         }
+        #region 顶
+
+        private void AddRoof(string cRoof, int cLevel)
+        {
+            roof.AddRoof(cRoof, cLevel);
+        }
+        #endregion
+        #region 墙
+        private void AddWall(string cWall, int cLevel)
+        {
+            wall.AddWall(cWall, cLevel);
+        }
+        #endregion
+        #region ring
+        private void AddRing(string cRing, int cLevel)
+        {
+            _ring.AddRing(cRing, cLevel);
+        }
+        #endregion
+
         #region 精灵
         private void AddCharacter(string[] cCharacterId, int[] cCharacterEvo)
         {
@@ -157,6 +214,13 @@ namespace Assets.Script
             _earth.AddEarth(id, level);
         }
 
+        #endregion
+
+        #region cover
+        public void AddCover(string id, int level)
+        {
+            _cover.AddCover(id, level);
+        }
         #endregion
 
         public void SetCellVisible(bool visible)

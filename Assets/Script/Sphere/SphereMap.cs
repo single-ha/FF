@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Assets.Script.Config;
+using Assets.Script.Data;
 using UnityEngine;
 
 namespace Assets.Script
@@ -41,7 +41,7 @@ namespace Assets.Script
         public void Init(int level)
         {
             this.level = level;
-            var sizeConfig = Config.TerrainSize.GetTerrainSize(level.ToString());
+            var sizeConfig = SphereLevel.GetLevel(level.ToString());
             if (sizeConfig!=null)
             {
                 diameter = sizeConfig.Diameter;

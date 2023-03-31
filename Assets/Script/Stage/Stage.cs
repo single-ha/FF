@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Assets.Script.Config;
+using Assets.Script.Data;
 using Assets.Script.Manager;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;

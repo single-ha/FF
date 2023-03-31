@@ -60,7 +60,6 @@ public class Loader_Bundle : IResLoader, IResLoader_Stop
         }
 
         result = Path.Combine(Application.streamingAssetsPath, fileName);
-        Debuger.LogError(result);
         return result;
     }
 

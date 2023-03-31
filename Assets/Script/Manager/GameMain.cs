@@ -24,6 +24,7 @@ public class GameMain : MonoBehaviour
 
     void InitGame()
     {
+        Application.targetFrameRate = 60;
         GameObject.DontDestroyOnLoad(this.transform.parent.gameObject);
         InitManagers();
     }

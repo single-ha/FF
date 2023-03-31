@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Assets.Script.Config;
+using Assets.Script.Data;
 using Lean.Touch;
 using UnityEngine;
 

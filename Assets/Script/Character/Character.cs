@@ -1,4 +1,4 @@
-﻿using Assets.Script.Config;
+﻿using Assets.Script.Data;
 using Assets.Script.Manager;
 using UnityEngine;
 using UnityEngine.AI;
@@ -120,6 +120,26 @@ namespace Assets.Script
             }
             GameObject.Destroy(this.root);
             characterAi.Destory();
+        }
+
+        public void DisEnable()
+        {
+            if (this.root == null)
+            {
+                return;
+            }
+            characterAi.DisEnable();
+            this.root.gameObject.SetActive(false);
+        }
+
+        public void Enable()
+        {
+            if (this.root == null)
+            {
+                return;
+            }
+            this.root.gameObject.SetActive(true);
+            characterAi.Enable();
         }
         public void Warp(Vector3 pos)
         {

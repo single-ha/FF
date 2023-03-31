@@ -1,4 +1,4 @@
-﻿using Assets.Script.Config;
+﻿using Assets.Script.Data;
 using Assets.Script.Manager;
 using UnityEngine;
 
@@ -6,40 +6,29 @@ namespace Assets.Script
 {
     public class SphereEarth: SphereComponent
     {
-        private int level;
-        public int Level => level;
-        private EarthConfig config;
-        private GameObject obj;
         public SphereEarth(Transform root) : base(root)
         {
             
         }
         public void AddEarth(string id, int level)
         {
-            this.level = level;
-            config = EarthConfig.GetEarthSingleConfig(id);
-            if (config != null)
+            var config = new EarthConfig(id);
+            var levelConfig = SphereLevel.GetLevel(level.ToString());
+            if (string.IsNullOrEmpty(config.prefab))
             {
-                if (string.IsNullOrEmpty(config.prefab))
-                {
-                    Debuger.LogError($"Earth({id}的prefab是空)");
-                    return;
-                }
-                var o = ResManager.Inst.Load<GameObject>($"{config.prefab}.prefab");
-                obj = GameObject.Instantiate(o,this.root);
-                obj.transform.localPosition=Vector3.zero;
-                obj.transform.localScale=Vector3.one;
-                for (int i = 0; i < obj.transform.childCount; i++)
-                {
-                    var child = obj.transform.GetChild(i);
-                    child.gameObject.SetActive(child.name==level.ToString());
-                }
+                Debuger.LogError($"Earth({id}的prefab是空)");
+                return;
             }
-            else
-            {
-                //earth中没有id为{id}的配置
-                Debuger.LogError($"terrains中没有id为{id}的配置");
-            }
+            var o = ResManager.Inst.Load<GameObject>($"{config.prefab}.prefab");
+            var obj = GameObject.Instantiate(o, this.root);
+            obj.transform.localPosition = Vector3.zero;
+            var scale = (float)levelConfig.scale;
+            obj.transform.localScale = new Vector3(scale, scale, scale);
+            // for (int i = 0; i < obj.transform.childCount; i++)
+            // {
+            //     var child = obj.transform.GetChild(i);
+            //     child.gameObject.SetActive(child.name == level.ToString());
+            // }
         }
     }
 }

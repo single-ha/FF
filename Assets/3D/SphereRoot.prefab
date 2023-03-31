@@ -70,7 +70,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6552074521569687889}
   m_Layer: 0
-  m_Name: glassRoot
+  m_Name: coverRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

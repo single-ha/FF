@@ -1,4 +1,4 @@
-﻿using Assets.Script.Config;
+﻿using Assets.Script.Data;
 using Assets.Script.Manager;
 using UnityEngine;
 using UnityEngine.AI;
@@ -33,7 +33,7 @@ namespace Assets.Script
             }
         }
 
-        public void SetNavObstacle()
+        public void SetNavObstacleAndCollider()
         {
             if (root==null)
             {
@@ -45,7 +45,26 @@ namespace Assets.Script
                 navMeshObstacle = this.root.AddComponent<NavMeshObstacle>();
             }
             navMeshObstacle.carving = true;
-            navMeshObstacle.size = config.Size*SphereMap.SphereCell;
+            var size = config.Size * SphereMap.SphereCell;
+            navMeshObstacle.center = new Vector3(0, size.y / 2, 0);
+            navMeshObstacle.size = size;
+            BoxCollider collider = this.root.GetComponent<BoxCollider>();
+            if (collider==null)
+            {
+                collider = this.root.AddComponent<BoxCollider>();
+            }
+
+            collider.center = new Vector3(0, size.y / 2, 0);
+            collider.size = size;
+        }
+
+        public void SetLayer(string layer)
+        {
+            if (root==null)
+            {
+                return;
+            }
+            root.SetLayer(layer);
         }
     }
 }

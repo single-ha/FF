@@ -97,6 +97,7 @@ namespace Assets.Script
         public override void DisEnable()
         {
             StopCor();
+            building.bePlaying = false;
         }
     }
 }

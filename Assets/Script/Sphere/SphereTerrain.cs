@@ -1,4 +1,4 @@
-﻿using Assets.Script.Config;
+﻿using Assets.Script.Data;
 using Assets.Script.Manager;
 using UnityEngine;
 using UnityEngine.AI;
@@ -27,7 +27,7 @@ namespace Assets.Script
         public void AddTerrain(string id, int level)
         {
             this.level = level;
-            config = TerrainConfig.GetTerrainConfig(id);
+            config =new TerrainConfig(id);
             if (config != null)
             {
                 if (!string.IsNullOrEmpty(config.prefab_name))

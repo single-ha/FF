@@ -113,8 +113,8 @@ namespace Assets.Script
 
             if (next!=null)
             {
-                next.Start();
                 curBehaviour = next;
+                curBehaviour.Start();
             }
             else
             {
@@ -152,6 +152,20 @@ namespace Assets.Script
             }
         }
 
+        public void Enable()
+        {
+            if (aiEnable)
+            {
+                BeginBehaviour();
+                if (cor != null)
+                {
+                    GameMain.Inst.StopCoroutine(cor);
+                    cor = null;
+                }
+                cor = GameMain.Inst.StartCoroutine(Update());
+            }
+
+        }
         public void Destory()
         {
             if (cor != null)
