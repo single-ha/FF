@@ -7,17 +7,28 @@ namespace Assets.Script
     public class SphereCharacters:SphereComponent
     {
         public List<Character> characters;
-        public SphereCharacters(Transform root) : base(root)
+        public SphereCharacters(Sphere sphere) : base(sphere)
         {
             characters = new List<Character>();
         }
-        public void AddCharacter(Character character,Vector2 grid)
+        public void AddCharacter(Character character)
         {
-            character.SetParent(this.root.gameObject);
+            character.onLoaded = delegate()
+            {
+                OnShow(character);
+            };
+            characters.Add(character);
+        }
+
+        private void OnShow(Character character)
+        {
+            character.SetParent(this.root.transform);
+            character.root.transform.localPosition = Vector3.zero;
+            character.root.transform.localScale = Vector3.one;
+            Vector3 grid = sphere.sphereMap.SampleRandomPostion();
             var pos = SphereMap.GetPositionByGrid(grid);
             character.Warp(pos);
             character.SetAI(true);
-            characters.Add(character);
         }
     }
 }

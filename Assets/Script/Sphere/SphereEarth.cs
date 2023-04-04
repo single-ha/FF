@@ -1,4 +1,5 @@
-﻿using Assets.Script.Data;
+﻿using System.Collections.Generic;
+using Assets.Script.Data;
 using Assets.Script.Manager;
 using UnityEngine;
 
@@ -6,29 +7,29 @@ namespace Assets.Script
 {
     public class SphereEarth: SphereComponent
     {
-        public SphereEarth(Transform root) : base(root)
+        private Earth earth;
+        public Earth AddEarth(string id)
         {
-            
+            earth = new Earth(id);
+            earth.onLoaded = OnShow;
+            return earth;
         }
-        public void AddEarth(string id, int level)
+
+        public void OnShow()
         {
-            var config = new EarthConfig(id);
-            var levelConfig = SphereLevel.GetLevel(level.ToString());
-            if (string.IsNullOrEmpty(config.prefab))
+            if (earth==null)
             {
-                Debuger.LogError($"Earth({id}的prefab是空)");
                 return;
             }
-            var o = ResManager.Inst.Load<GameObject>($"{config.prefab}.prefab");
-            var obj = GameObject.Instantiate(o, this.root);
-            obj.transform.localPosition = Vector3.zero;
+            earth.SetParent(this.root.transform);
+            earth.root.transform.localPosition = Vector3.zero;
+            var levelConfig = SphereLevel.GetLevel(sphere.level.ToString());
             var scale = (float)levelConfig.scale;
-            obj.transform.localScale = new Vector3(scale, scale, scale);
-            // for (int i = 0; i < obj.transform.childCount; i++)
-            // {
-            //     var child = obj.transform.GetChild(i);
-            //     child.gameObject.SetActive(child.name == level.ToString());
-            // }
+            earth.root.transform.localScale = new Vector3(scale, scale, scale);
+        }
+
+        public SphereEarth(Sphere sphere) : base(sphere)
+        {
         }
     }
 }

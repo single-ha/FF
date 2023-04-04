@@ -165,8 +165,9 @@ namespace Assets.Script
             var s = Vector3.Distance(pos, Vector3.zero);
             return 2 * s <= diameter;
         }
-        public void AddBuildings(string[] cBuildings, int[] cBuildingsX, int[] cBuildingsY,int[] cBuildingsR)
+        public List<BuildingInSphere> AddBuildings(string[] cBuildings, int[] cBuildingsX, int[] cBuildingsY,int[] cBuildingsR)
         {
+            List<BuildingInSphere> result = new List<BuildingInSphere>();
             int length = cBuildings.Length;
             for (int i = 0; i < length; i++)
             {
@@ -176,7 +177,8 @@ namespace Assets.Script
                 {
                     if (Check(cBuildingsX[i],cBuildingsY[i], buildingConfig.GetSize_Ration(cBuildingsR[i])))
                     {
-                        AddBuilding(id, cBuildingsX[i], cBuildingsY[i], cBuildingsR[i]);
+                       var b= AddBuilding(id, cBuildingsX[i], cBuildingsY[i], cBuildingsR[i]);
+                       result.Add(b);
                     }
                     else
                     {
@@ -184,6 +186,8 @@ namespace Assets.Script
                     }
                 }
             }
+
+            return result;
         }
 
         public void AddBuildingWithChck(string id,Vector2 grid,int rotation)
@@ -199,39 +203,49 @@ namespace Assets.Script
             }
             AddBuilding(id, grid, rotation);
         }
-        public void AddBuilding(string id, int x, int y,int rotation)
+        public BuildingInSphere AddBuilding(string id, int x, int y,int rotation)
         {
-            AddBuilding(id,new Vector2(x,y), rotation);
+            Vector3 grid = new Vector3(x, 0, y);
+            grid.y = mapHeight[x][y];
+           return AddBuilding(id,grid, rotation);
         }
-        public void AddBuilding(string id, Vector2 grid,int rotation)
+        public BuildingInSphere AddBuilding(string id, Vector2 grid,int rotation)
         {
             BuildingInSphere b = new BuildingInSphere(id);
             b.grid = grid;
             b.rotation = rotation;
             this.buildings.Add(b);
             SetMapHeight((int)grid.x, (int)grid.y, b.config.GetSize_Ration(rotation));
+            return b;
         }
 
-        public Vector2 SampleRandomPostion()
+        public Vector3 SampleRandomPostion()
         {
             var radius = diameter / 2.0f;
             var length =Mathf.FloorToInt(radius / SphereMap.SphereCell);
             int x = Random.Range(-length-1, length+1);
             int y = Random.Range(-length - 1, length + 1);
-            return new Vector2(x, y);
+            return new Vector3(x,0, y);
         }
 
         public static Vector3 GetPositionByGrid(int x,int y)
         {
-
             return new Vector3(x * SphereCell, 0,y * SphereCell);
         }
 
-        public static Vector3 GetPositionByGrid(Vector2 grid)
+        public static Vector3 GetPositionByGrid(Vector3 grid)
         {
-            return GetPositionByGrid((int)grid.x, (int)grid.y);
+            return GetPositionByGrid((int)grid.x, (int)grid.z);
         }
+        public float GetHeightByGrid(int grid_x, int grid_y)
+        {
+            if (mapHeight.ContainsKey(grid_x)&&mapHeight[grid_x].ContainsKey(grid_y))
+            {
+                return mapHeight[grid_x][grid_y]* SphereCell;
+            }
 
+            return float.NegativeInfinity;
+        }
         public static Vector2 GetGridByPosition(Vector3 pos)
         {
             var x = pos.x/SphereCell;

@@ -15,18 +15,17 @@ namespace Assets.Script
         SIT,
     }
 
-    public class Character
+    public class Character : StagePlayer
     {
-        private string id;
         private int evo;
         public Sphere sphere;
         public NavMeshAgent agent;
 
-        public GameObject root;
         private CharacterConfig config;
         private CharacterSkinConfig skin;
         public CharacterAI characterAi;
-        public Character(string id, int evo)
+
+        public Character(string id, int evo) : base(id)
         {
             this.id = id;
             this.evo = evo;
@@ -34,7 +33,7 @@ namespace Assets.Script
             skin = new CharacterSkinConfig(config.evo_skin[evo]);
         }
 
-        public void LoadModel()
+        public override void Load()
         {
             GameObject obj = ResManager.Inst.Load<GameObject>($"{skin.prefab}.prefab");
             root = GameObject.Instantiate(obj);
@@ -47,9 +46,9 @@ namespace Assets.Script
             var meshBuildSettings = NavMesh.GetSettingsByIndex(1);
             agent.agentTypeID = meshBuildSettings.agentTypeID;
             characterAi = new CharacterAI(this);
-            characterAi.AddAIBase(CharacterAIType.RUNAROUND,new RunAround());
-            characterAi.AddAIBase(CharacterAIType.WALKAROUND,new WalkAround());
-            characterAi.AddAIBase(CharacterAIType.IDLE,new IdleBehaviour());
+            characterAi.AddAIBase(CharacterAIType.RUNAROUND, new RunAround());
+            characterAi.AddAIBase(CharacterAIType.WALKAROUND, new WalkAround());
+            characterAi.AddAIBase(CharacterAIType.IDLE, new IdleBehaviour());
             characterAi.AddAIBase(CharacterAIType.PLAYWITHBUILDING, new PlayWithBuilding());
         }
 
@@ -58,38 +57,29 @@ namespace Assets.Script
         {
             characterAi.SetEnable(enable);
         }
-        public void SetParent(GameObject parent)
-        {
-            if (root==null||parent==null)
-            {
-                Debuger.LogWarning($"{id}_{evo}设置父物体失败,root:{root},parent:{parent}");
-                return;
-            }
-            root.transform.SetParent(parent.transform);
-            root.transform.localPosition=Vector3.zero;
-            root.transform.localScale=Vector3.one;
-        }
 
         public void SetSphere(Sphere sphere)
         {
             this.sphere = sphere;
         }
-        public double PlayAni(string ani,bool loop)
+
+        public double PlayAni(string ani, bool loop)
         {
-            if (this.root==null)
+            if (this.root == null)
             {
                 Debuger.LogWarning($"{id}_{evo}播放动画失败,root等于null");
                 return 0;
             }
+
             PlayableDirector pd = this.root.GetComponent<PlayableDirector>();
-            if (pd==null)
+            if (pd == null)
             {
                 pd = this.root.AddComponent<PlayableDirector>();
             }
 
             pd.extrapolationMode = loop ? DirectorWrapMode.Loop : DirectorWrapMode.Hold;
             PlayableAsset pa = ResManager.Inst.Load<PlayableAsset>($"{skin.type}_{ani}.playable");
-            if (pa==null)
+            if (pa == null)
             {
                 Debuger.LogWarning($"{id}_{evo}播放动画失败,不存在:{skin.type}_{ani}");
                 return 0;
@@ -97,50 +87,46 @@ namespace Assets.Script
 
             pd.playableAsset = pa;
             Animator animator = this.root.GetComponent<Animator>();
-            if (animator==null)
+            if (animator == null)
             {
                 animator = this.root.AddComponent<Animator>();
             }
+
             foreach (var assetOutput in pd.playableAsset.outputs)
             {
-                if (assetOutput.outputTargetType==typeof(Animator))
+                if (assetOutput.outputTargetType == typeof(Animator))
                 {
                     pd.SetGenericBinding(assetOutput.sourceObject, animator);
                 }
             }
+
             pd.Play();
             return pd.playableAsset.duration;
         }
 
         public void Destory()
         {
-            if (this.root==null)
+            if (this.root == null)
             {
                 return;
             }
+
             GameObject.Destroy(this.root);
             characterAi.Destory();
         }
 
-        public void DisEnable()
+        public override void DisEnable()
         {
-            if (this.root == null)
-            {
-                return;
-            }
+            base.DisEnable();
             characterAi.DisEnable();
-            this.root.gameObject.SetActive(false);
         }
 
-        public void Enable()
+        public override void Enable()
         {
-            if (this.root == null)
-            {
-                return;
-            }
-            this.root.gameObject.SetActive(true);
+            base.Enable();
             characterAi.Enable();
         }
+
         public void Warp(Vector3 pos)
         {
             characterAi.Warp(pos);

@@ -1,4 +1,5 @@
-﻿using Assets.Script.Data;
+﻿using System.Collections.Generic;
+using Assets.Script.Data;
 using Assets.Script.Manager;
 using UnityEngine;
 
@@ -6,29 +7,34 @@ namespace Assets.Script
 {
     public class SphereRing: SphereComponent
     {
-        public SphereRing(Transform root) : base(root)
-        {
+        private Ring ring;
 
+        public Ring AddRing(string id, int level)
+        {
+            if (!string.IsNullOrEmpty(id))
+            {
+                ring = new Ring(id);
+                ring.onLoaded = Show;
+            }
+            return ring;
         }
 
-        public void AddRing(string id, int level)
+        public SphereRing(Sphere sphere) : base(sphere)
         {
-            if (string.IsNullOrEmpty(id))
+        }
+
+
+        public void Show()
+        {
+            if (ring==null)
             {
                 return;
             }
-            var config = new RingConfig(id);
-            var levelConfig = SphereLevel.GetLevel(level.ToString());
-            if (string.IsNullOrEmpty(config.prefab))
-            {
-                Debuger.LogError($"Ring({id}的prefab是空)");
-                return;
-            }
-            var o = ResManager.Inst.Load<GameObject>($"{config.prefab}.prefab");
-            var obj = GameObject.Instantiate(o, this.root);
-            obj.transform.localPosition = Vector3.zero;
+            ring.SetParent(this.root.transform);
+            ring.root.transform.localPosition = Vector3.zero;
+            var levelConfig = SphereLevel.GetLevel(sphere.level.ToString());
             var scale = (float)levelConfig.scale;
-            obj.transform.localScale = new Vector3(scale, scale, scale);
+            ring.root.transform.localScale = new Vector3(scale, scale, scale);
         }
     }
 }

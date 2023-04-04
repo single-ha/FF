@@ -13,11 +13,11 @@ namespace Assets.Script
         private Camera camera;
         private CamerasConfig.CameraConfig config;
 
-        private bool isControll=true;
-        public bool IsControll
+        private bool enable=true;
+        public bool Enable
         {
-            get => isControll;
-            set => isControll = value;
+            get => enable;
+            set => enable = value;
         }
         private bool isRoting = false;
         private Vector2 fingerDelta=new Vector2(0,0);
@@ -42,7 +42,7 @@ namespace Assets.Script
         }
         private void OnGesture(List<LeanFinger> fingers)
         {
-            if (!isControll)
+            if (!enable)
             {
                 return;
             }

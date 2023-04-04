@@ -1,0 +1,197 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 30276_hua_04_texture
+  m_Shader: {fileID: 4800000, guid: b236c1d11223b2f4da3584017c2edea5, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Diffuse_Tex:
+        m_Texture: {fileID: 2800000, guid: 35a6752478cfdf745963910d383c9827, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ERARGB:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _HighLightRange:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _HightLightColor:
+        m_Texture: {fileID: 2800000, guid: 35a6752478cfdf745963910d383c9827, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _HightLightRange:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 35a6752478cfdf745963910d383c9827, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Ramp:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Ramp2:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RampSwitch:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Ramp_Tex:
+        m_Texture: {fileID: 2800000, guid: 43ad6192a190af943b7882c602bd9096, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SEHRGB:
+        m_Texture: {fileID: 2800000, guid: 24e351344f0fb5b459d313927b0daee5, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ShadowColor:
+        m_Texture: {fileID: 2800000, guid: 35a6752478cfdf745963910d383c9827, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ShadowRange:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Shadow_Color_Tex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecRamp:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _AllowCloseCam: 0
+    - _Alpha: 1
+    - _AlphaArea_Scale: 0.5
+    - _Back_Shadow_Scale: 1
+    - _BumpScale: 1
+    - _Cutoff: 0.5
+    - _DetailNormalMapScale: 1
+    - _DstBlend: 0
+    - _DstBlendMode: 0
+    - _EdgeLight_Area: 0
+    - _GlossMapScale: 1
+    - _Glossiness: 0.5
+    - _GlossyReflections: 1
+    - _HighLightPower: 1
+    - _HighLight_Area: 1
+    - _MaxDis: 55
+    - _Metallic: 0
+    - _Mode: 0
+    - _NormalDown: 0.13
+    - _NormalUp: 1
+    - _OcclusionStrength: 1
+    - _Outline: 0.01
+    - _OutlineFactor: 0.02
+    - _Outline_View_Distance: 0
+    - _Outline_Width_Max: 0.07
+    - _Outline_Width_Min: 0.03
+    - _Parallax: 0.02
+    - _Power: 2.9
+    - _ReflectPower: 0
+    - _ReflectThreshold: 1
+    - _RimPower: 0
+    - _RimX: 0
+    - _RimY: 0
+    - _RimZ: 0
+    - _ShadowLine_Scale: 0
+    - _Smooth: 1
+    - _Smoothness: 1
+    - _SmoothnessTextureChannel: 0
+    - _SpecExp: 32
+    - _SpecPower: 1
+    - _SpecularHighlights: 1
+    - _SrcBlend: 1
+    - _SrcBlendMode: 1
+    - _UVSec: 0
+    - _Use_Edgelight: 0
+    - _Use_Emission: 0
+    - _Use_Highlight: 0
+    - _ZWrite: 1
+    - _ZwriteVal: 1
+    - _closeCamOutlineWidth: 0.002
+    - _startTransparentDist: 5
+    - _toggleDistAlpha: 0
+    - _totalTransparentDist: 1
+    m_Colors:
+    - _Ambient_Light_Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Ambient_Light_Shadow_Color: {r: 1, g: 1, b: 1, a: 1}
+    - _BloomColor: {r: 0, g: 0, b: 0, a: 0}
+    - _Color: {r: 0.588, g: 0.588, b: 0.588, a: 1}
+    - _DiffuseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _EdgeLight_Color: {r: 1, g: 1, b: 1, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _Emission_Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Highlight_Color: {r: 1, g: 1, b: 1, a: 1}
+    - _LightDir: {r: 0.1, g: 0.3, b: 0.4, a: 1}
+    - _MainColor: {r: 1, g: 1, b: 1, a: 1}
+    - _OutlineColor: {r: 0.3602941, g: 0.2256744, b: 0.10067042, a: 0.772}
+    - _Outline_Color: {r: 0, g: 0, b: 0, a: 1}
+    - _RealShadowColor: {r: 1, g: 1, b: 1, a: 1}
+    - _ReflectColor: {r: 0, g: 0, b: 0, a: 1}
+    - _Retouch_Color: {r: 0, g: 0, b: 0, a: 1}
+    - _RimColor: {r: 1, g: 1, b: 1, a: 1}
+    - _Rim_Color: {r: 0, g: 0, b: 0, a: 1}
+    - _Shadow_Color: {r: 0.9264706, g: 0.8719723, b: 0.8719723, a: 1}
+    - _disColor: {r: 0.56999993, g: 0.5, b: 0.43399993, a: 1}
+    - _xSpecColor: {r: 1, g: 1, b: 1, a: 1}

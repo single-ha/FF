@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using Assets.Script.Data;
 using Assets.Script.Manager;
 using UnityEngine;
@@ -21,7 +22,7 @@ namespace Assets.Script
         private Transform prefabRoot;
         private Transform main;
         private Transform forword;
-        private CameraController cameraController;
+        public CameraController cameraController;
 
         public Stage(GameObject root)
         {
@@ -66,9 +67,24 @@ namespace Assets.Script
             obj.transform.localPosition = Vector3.zero;
         }
 
-        public void Show(Sphere sphere)
+        public void Show(StagePlayer sphere)
         {
-            ShowGameObject(sphere.Root);
+            if (sphere is Sphere show)
+            {
+               show.stage = this;
+            }
+            GameMain.Inst.StartCoroutine(IEShow(sphere));
+        }
+
+        private IEnumerator IEShow(StagePlayer sphere)
+        {
+            var list = sphere.GetGraphs();
+            for (int i = 0; i < list.Count; i++)
+            {
+                list[i].Show();
+                yield return null;
+            }
+            ShowGameObject(sphere.root);
         }
 
         public void SetStageVisible(bool visible)

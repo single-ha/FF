@@ -9,15 +9,17 @@ namespace Assets.Script.Manager
 {
     public class SphereEditor
     {
-        private event Action<GameObject, Vector3> ClickEvent;
-        private event Action<Vector3> HandleEvent;
+        public Action onStartEditor;
+        public Action onEndEditor;
         private Coroutine cor;
-        private int layerMask;
         private bool enable;
         private Vector3 startPos;
-        public SphereEditor()
+        private BuildingInSphere building;
+        private Sphere sphere;
+        private bool hode;
+        public SphereEditor(Sphere sphere)
         {
-            this.layerMask = 1<<8;
+            this.sphere = sphere;
         }
 
         public bool Enable
@@ -59,72 +61,106 @@ namespace Assets.Script.Manager
             if (Input.GetMouseButtonDown(0))
             {
                 startPos = Input.mousePosition;
+                if (building!=null)
+                {
+                    Ray ray = StageManager.Inst.ShowStage.Camera.ScreenPointToRay(Input.mousePosition);
+                    RaycastHit rayHit;
+                    if (Physics.Raycast(ray, out rayHit, 1000f, 1<<9))
+                    {
+                        if (rayHit.transform==building.root.transform)
+                        {
+                            hode = true;
+                        }
+                    }
+                }
             }
             if (Input.GetMouseButtonUp(0))
             {
-                var dis = Vector3.Distance(startPos, Input.mousePosition);
-                if (dis>0.1f)
+                if (building==null)
                 {
-                    return;
-                }
-                Ray ray = StageManager.Inst.ShowStage.Camera.ScreenPointToRay(Input.mousePosition);
-                RaycastHit rayHit;
-                if (Physics.Raycast(ray, out rayHit, 1000f, layerMask))
-                {
-                    if (rayHit.transform)
+                    var dis = Vector3.Distance(startPos, Input.mousePosition);
+                    if (dis > 0.1f)
                     {
-                        ClickEvent?.Invoke(rayHit.transform.gameObject, rayHit.point);
+                        return;
+                    }
+                    Ray ray = StageManager.Inst.ShowStage.Camera.ScreenPointToRay(Input.mousePosition);
+                    RaycastHit rayHit;
+                    if (Physics.Raycast(ray, out rayHit, 1000f, 1<<9))
+                    {
+                        if (rayHit.transform)
+                        {
+                            building = sphere.GetBuilding(rayHit.transform.gameObject);
+                            StartEditor();
+                        }
+                    }
+                    else
+                    {
+                        //没有点击到碰撞物
                     }
                 }
                 else
                 {
-                    //没有点击到碰撞物
+                    var dis = Vector3.Distance(startPos, Input.mousePosition);
+                    if (dis <= 0.1f)
+                    {
+                        //没有移动
+                        return;
+                    }
+                    else
+                    {
+                        if (hode)
+                        {
+                            building.Resume();
+                            // EndEditor();
+                        }
+                        else
+                        {
+
+                        }
+                    }
                 }
+                hode = false;
             }
 
             if (Input.GetMouseButton(0))
             {
-                HandleEvent?.Invoke(Input.mousePosition);
+                if (hode)
+                {
+                    building.Pause();
+                    Ray ray = StageManager.Inst.ShowStage.Camera.ScreenPointToRay(Input.mousePosition);
+                    RaycastHit rayHit;
+                    if (Physics.Raycast(ray, out rayHit, 1000f, 1 << 8))
+                    {
+                        building.root.transform.position = rayHit.point;
+                    }
+                }
             }
         }
 
-        public void SetClick(Action<GameObject, Vector3> onClick)
+        private void StartEditor()
         {
-            this.ClickEvent = onClick;
-        }
-        public void RegisterClick(Action<GameObject, Vector3> onClick)
-        {
-            this.ClickEvent += onClick;
+            sphere.SetCellVisible(true);
+            if (building == null)
+            {
+                return;
+            }
+
+            building.PlayAni("buildingselecttimeline", true);
+            onStartEditor?.Invoke();
         }
 
-        public void RemoveClick(Action<GameObject, Vector3> OnClick)
+        public void EndEditor()
         {
-            ClickEvent -= OnClick;
-        }
-
-        public void SetLayerMask(int layerMask)
-        {
-            this.layerMask = layerMask;
-        }
-        public void AddLayMask(int layer)
-        {
-            layerMask |= 1 << layer;
-        }
-        public void RemoveMask(int layer)
-        {
-            layerMask ^= 1 << layer;
-        }
-
-        public void AddLayMask(string layerName)
-        {
-            int layer = LayerMask.NameToLayer(layerName);
-            AddLayMask(layer);
-        }
-
-        public void RemoveMask(string layerName)
-        {
-            int layer = LayerMask.NameToLayer(layerName);
-            RemoveMask(layer);
+            sphere.SetCellVisible(false);
+            if (building == null)
+            {
+                return;
+            }
+            building.Stop();
+            building.root.transform.position = SphereMap.GetPositionByGrid(building.grid);
+            building = null;
+            hode = false;
+            onEndEditor?.Invoke();
         }
 
         private void OnDisable()

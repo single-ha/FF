@@ -8,9 +8,9 @@ namespace Assets.Script.Data
         {
             get { return reader.ReadInt("id"); }
         }
-        public string prefab_name
+        public string Prefab
         {
-            get { return reader.ReadStr("prefab_name"); }
+            get { return reader.ReadStr("prefab"); }
         }
 
         public string material

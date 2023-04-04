@@ -1,13 +1,19 @@
-﻿using JetBrains.Annotations;
+﻿using Assets.Script.Data;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Assets.Script
 {
     public abstract class SphereComponent
     {
-        protected Transform root;
+        public Transform root;
+        public Sphere sphere;
+        public SphereComponent(Sphere sphere)
+        {
+            this.sphere=sphere;
+        }
 
-        public SphereComponent(Transform root)
+        public void SetRoot(Transform root)
         {
             this.root = root;
         }

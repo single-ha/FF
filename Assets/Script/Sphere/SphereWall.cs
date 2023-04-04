@@ -1,33 +1,39 @@
-﻿using Assets.Script.Data;
+﻿using System.Collections.Generic;
+using Assets.Script.Data;
 using Assets.Script.Manager;
 using UnityEngine;
 
 namespace Assets.Script
 {
-    public class SphereWall:SphereComponent
+    public class SphereWall : SphereComponent
     {
-        public SphereWall(Transform root) : base(root)
+        private Wall wall;
+
+        public Wall AddWall(string id)
         {
+            if (!string.IsNullOrEmpty(id))
+            {
+                wall = new Wall(id);
+                wall.onLoaded = OnShow;
+            }
+            return wall;
         }
 
-        public void AddWall(string id, int level)
+        public void OnShow()
         {
-            if (string.IsNullOrEmpty(id))
+            if (wall==null)
             {
                 return;
             }
-            var config = new WallConfig(id);
-            var levelConfig = SphereLevel.GetLevel(level.ToString());
-            if (string.IsNullOrEmpty(config.Prefab))
-            {
-                Debuger.LogError($"cover({id}的prefab是空)");
-                return;
-            }
-            var o = ResManager.Inst.Load<GameObject>($"{config.Prefab}.prefab");
-            var obj = GameObject.Instantiate(o, this.root);
-            obj.transform.localPosition = Vector3.zero;
+            wall.SetParent(this.root);
+            wall.root.transform.localPosition = Vector3.zero;
+            var levelConfig = SphereLevel.GetLevel(sphere.level.ToString());
             var scale = (float)levelConfig.scale;
-            obj.transform.localScale = new Vector3(scale, scale, scale);
+            wall.root.transform.localScale = new Vector3(scale, scale, scale);
+        }
+
+        public SphereWall(Sphere sphere) : base(sphere)
+        {
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Assets.Script.Data
         {
             get { return reader.ReadInt("id"); }
         }
-        public string prefab
+        public string Prefab
         {
             get { return reader.ReadStr("prefab"); }
         }

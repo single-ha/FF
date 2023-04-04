@@ -30,7 +30,6 @@ namespace Assets.Script
             this.character = character;
             allBehaviour = new Dictionary<CharacterAIType, BehaviourBase>();
             totalWeight = 0;
-           
         }
 
         public void AddAIBase(CharacterAIType type,BehaviourBase behaviour)
