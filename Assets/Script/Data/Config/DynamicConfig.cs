@@ -4,10 +4,8 @@ using UnityEngine;
 
 namespace Assets.Script.Data
 {
-    public class DynamicConfig
+    public class DynamicConfig:DataBase
     {
-        protected JsonReader reader;
-
         public DynamicConfig(string configName)
         {
             GetJsonData(configName);
@@ -26,7 +24,7 @@ namespace Assets.Script.Data
             }
             else
             {
-                reader = new JsonReader(JsonMapper.ToObject(config.text));
+                SetJson(JsonMapper.ToObject(config.text));
             }
         }
     }

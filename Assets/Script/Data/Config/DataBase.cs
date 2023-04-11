@@ -2,22 +2,24 @@
 
 namespace Assets.Script.Data
 {
-    public class ConfigNode
+    public class DataBase
     {
         protected JsonReader reader;
-
-        public ConfigNode()
+        protected JsonData json;
+        public DataBase()
         {
             reader = new JsonReader();
         }
 
-        public void SetJson(JsonData js)
+        public virtual void SetJson(JsonData js)
         {
             if (reader==null)
             {
                 reader = new JsonReader();
             }
-            reader.SetJson(js);
+
+            json = js;
+            reader.SetJson(json);
         }
     }
 }

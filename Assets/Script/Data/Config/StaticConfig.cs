@@ -4,10 +4,9 @@ using UnityEngine;
 
 namespace Assets.Script.Data
 {
-    public abstract class StaticConfig<T> where T:new()
+    public abstract class StaticConfig<T>:DataBase where T:new()
     {
         private static T _inst;
-        protected JsonReader reader;
         public static T Inst
         {
             get
@@ -35,13 +34,9 @@ namespace Assets.Script.Data
             var j = GetJsonData();
             SetJson(j);
         }
-        public void SetJson(JsonData json)
+        public override void SetJson(JsonData json)
         {
-            if (reader==null)
-            {
-                reader = new JsonReader();
-            }
-            reader.SetJson(json);
+            base.SetJson(json);
             SetDirty(true);
         }
         protected abstract void ConfigName();

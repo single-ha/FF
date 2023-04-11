@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Assets.Script.Data;
 using Assets.Script.Manager;
+using UnityEditor.Build.Content;
 
 namespace Assets.Script.UI
 {
@@ -18,11 +20,14 @@ namespace Assets.Script.UI
 
         protected override void OnShow(PanelDateBase panelDateBase)
         {
-            StageManager.Inst.MainStage.Decorate("1");
-            StageManager.Inst.MainStage.SetCamera("1");
+            StageManager.Inst.MainStage.Decorate(MainInfo.Inst.mainBackground);
+            Scene scene = new Scene();
             Sphere s = new Sphere();
-            s.SetSphere("20000");
+            s.SetSphere(SphereInfos.Inst.Shpheres[MainInfo.Inst.mainSphere].SphereTemplate);
+            scene.AddSphere(0,s);
             StageManager.Inst.MainStage.Show(s);
+            StageManager.Inst.MainStage.SetCamera("1");
+
             // s.EnableEditor();
             // var loadingPanel = UIManager.Inst.OpenPanel<LoadingPanelPresenter, LoadingPanelView>();
         }

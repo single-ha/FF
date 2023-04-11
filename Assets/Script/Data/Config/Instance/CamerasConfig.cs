@@ -9,7 +9,7 @@ namespace Assets.Script.Data
             configName = "cameras";
         }
 
-        public class CameraConfig:ConfigNode
+        public class CameraConfig:DataBase
         {
             private double[] _position;
             public double[] position

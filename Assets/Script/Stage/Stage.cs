@@ -67,24 +67,24 @@ namespace Assets.Script
             obj.transform.localPosition = Vector3.zero;
         }
 
-        public void Show(StagePlayer sphere)
+        public void Show(StagePlayer player)
         {
-            if (sphere is Sphere show)
+            player.SetStage(this);
+            player.onLoaded = delegate()
             {
-               show.stage = this;
-            }
-            GameMain.Inst.StartCoroutine(IEShow(sphere));
+                ShowGameObject(player.root);
+            };
+            GameMain.Inst.StartCoroutine(IEShow(player));
         }
 
         private IEnumerator IEShow(StagePlayer sphere)
         {
-            var list = sphere.GetGraphs();
+            var list = sphere.GetStagePlayers();
             for (int i = 0; i < list.Count; i++)
             {
                 list[i].Show();
                 yield return null;
             }
-            ShowGameObject(sphere.root);
         }
 
         public void SetStageVisible(bool visible)

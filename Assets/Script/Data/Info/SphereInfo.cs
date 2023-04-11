@@ -18,23 +18,27 @@ namespace Assets.Script.Data
                 return spheres;
             }
         }
-        public override JsonData GetJsonData()
+        protected override string GetJsonName()
         {
-            var path = Path.Combine(Application.persistentDataPath,"info","spheres");
-            if (File.Exists(path))
-            {
-                var text = File.ReadAllText(path);
-                return JsonMapper.ToObject(text);
-            }
-            else
-            {
-                return new JsonData();
-            }
+            return "spheres";
         }
     }
 
-    public class SphereInfo : ConfigNode
+    public class SphereInfo : DataBase
     {
+        private SphereTemplate sphereTemplate;
 
+        public SphereTemplate SphereTemplate
+        {
+            get
+            {
+                if (sphereTemplate==null)
+                {
+                    sphereTemplate = new SphereTemplate(json);
+                }
+
+                return sphereTemplate;
+            }
+        }
     }
 }

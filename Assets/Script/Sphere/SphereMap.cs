@@ -13,7 +13,7 @@ namespace Assets.Script
         /// <summary>
         /// 单位格子大小
         /// </summary>
-        public const float SphereCell = 0.463f / PRE;
+        public const float SphereCell = 0.462f / PRE;
 
         public int level;
 
@@ -54,23 +54,22 @@ namespace Assets.Script
             }
 
             var radius = diameter / 2.0f;
-            var length = radius / SphereMap.SphereCell;
-            for (int i = 0; i < length; i++)
+            int length = Mathf.FloorToInt(radius / SphereMap.SphereCell);
+            for (int i = -length; i < length; i++)
             {
-                for (int j = 0; j < length; j++)
+                for (int j = -length; j < length; j++)
                 {
                     InitMapHeight(i, j);
-                    InitMapHeight(i, -j);
-                    InitMapHeight(-i, j);
-                    InitMapHeight(-i, -j);
+                    // InitMapHeight(i, -j);
+                    // InitMapHeight(-i, j);
+                    // InitMapHeight(-i, -j);
                 }
             }
         }
 
         private void InitMapHeight(int x, int y)
         {
-            Vector3 normal = new Vector3(1, 0, 1);
-            if (EdgeCheck(x, y, normal))
+            if (EdgeCheck(x, y))
             {
                 SetMapHeight(x, y, 0);
             }
@@ -120,7 +119,7 @@ namespace Assets.Script
             {
                 int height = mapHeight[grid_X][grid_Y];
                 int mid_x = (int)size.x / 2;
-                int mid_y = (int)size.y / 2;
+                int mid_y = (int)size.z / 2;
                 for (int i = grid_X-mid_x; i < grid_X+mid_x; i++)
                 {
                     for (int j = grid_Y-mid_y; j <grid_Y+mid_y ; j++)
@@ -148,20 +147,28 @@ namespace Assets.Script
                 return false;
             }
 
+            if (mapHeight[grid_X][grid_Y]<0)
+            {
+                return false;
+            }
             return true;
         }
         /// <summary>
         /// 边缘检测
         /// </summary>
-        /// <param name="x">待检测点的很座标</param>
-        /// <param name="y">待检测点纵座标</param>
+        /// <param name="grid_x">待检测点的很座标</param>
+        /// <param name="grid_y">待检测点纵座标</param>
         /// <param name="size">调检测物体的大小</param>
         /// <returns></returns>
-        private bool EdgeCheck(int x, int y, Vector3 size)
+        private bool EdgeCheck(int grid_x, int grid_y)
         {
-            var pos = SphereMap.GetPositionByGrid(x, y);
-            pos = new Vector3(Mathf.Abs(pos.x), Mathf.Abs(pos.y), Mathf.Abs(pos.z));
-            pos += size * SphereMap.SphereCell / 2;
+            var tempX = grid_x >= 0 ? grid_x + 1 : grid_x;
+            var tempY = grid_y <= 0 ? grid_y : grid_y + 1;
+            var pos = SphereMap.GetPositionByGrid(tempX,tempY);
+
+            // var pos = SphereMap.GetPositionByGrid(grid_x, grid_y);
+            // pos +=new Vector3(SphereMap.SphereCell / 2,0,SphereMap.SphereCell / 2) ;
+
             var s = Vector3.Distance(pos, Vector3.zero);
             return 2 * s <= diameter;
         }
@@ -209,13 +216,13 @@ namespace Assets.Script
             grid.y = mapHeight[x][y];
            return AddBuilding(id,grid, rotation);
         }
-        public BuildingInSphere AddBuilding(string id, Vector2 grid,int rotation)
+        public BuildingInSphere AddBuilding(string id, Vector3 grid,int rotation)
         {
             BuildingInSphere b = new BuildingInSphere(id);
             b.grid = grid;
             b.rotation = rotation;
             this.buildings.Add(b);
-            SetMapHeight((int)grid.x, (int)grid.y, b.config.GetSize_Ration(rotation));
+            SetMapHeight((int)grid.x, (int)grid.z, b.config.GetSize_Ration(rotation));
             return b;
         }
 

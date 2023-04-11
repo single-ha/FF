@@ -8,6 +8,7 @@ namespace Assets.Script
         {
             var grid = character.sphere.sphereMap.SampleRandomPostion();
             var pos = SphereMap.GetPositionByGrid(grid);
+            pos = character.sphere.GetWordPos(pos);
             NavMeshHit hit;
             if (NavMesh.SamplePosition(pos, out hit, 10f, NavMesh.AllAreas))
             {

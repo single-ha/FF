@@ -9,7 +9,7 @@ Shader "FF/Cover" {
         _disColor("Dis Color", Color) = (0.57,0.5,0.434,1)
         [MaterialToggle] _toggleDistAlpha("Affect By Light",int)=1
     }
-    CustomEditor "jinglingShaderEditor"
+    // CustomEditor "jinglingShaderEditor"
     SubShader {
         Tags {
             "IgnoreProjector"="True"

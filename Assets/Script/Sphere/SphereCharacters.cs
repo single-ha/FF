@@ -27,6 +27,7 @@ namespace Assets.Script
             character.root.transform.localScale = Vector3.one;
             Vector3 grid = sphere.sphereMap.SampleRandomPostion();
             var pos = SphereMap.GetPositionByGrid(grid);
+            pos = sphere.GetWordPos(pos);
             character.Warp(pos);
             character.SetAI(true);
         }

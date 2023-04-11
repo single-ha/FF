@@ -47,7 +47,7 @@ namespace Assets.Script
         public void OnShow(BuildingInSphere building)
         {
             building.SetParent(this.root.transform);
-            building.root.transform.position = SphereMap.GetPositionByGrid(building.grid);
+            building.root.transform.localPosition = SphereMap.GetPositionByGrid(building.grid);
             building.root.transform.localRotation = Quaternion.Euler(0, building.rotation, 0);
             building.SetNavObstacleAndCollider();
             building.SetLayer("Building");

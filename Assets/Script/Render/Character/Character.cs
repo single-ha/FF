@@ -6,15 +6,6 @@ using UnityEngine.Playables;
 
 namespace Assets.Script
 {
-    public enum CharacterActionType
-    {
-        IDLE,
-        WALK,
-        LAY,
-        RUN,
-        SIT,
-    }
-
     public class Character : StagePlayer
     {
         private int evo;

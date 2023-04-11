@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Assets.Script.Manager;
+using UnityEditor;
 using UnityEngine;
 
 namespace Assets.Script
@@ -12,12 +13,14 @@ namespace Assets.Script
         Vector3 normal = new Vector3(1, 0, 1);
 
         private Sphere sphere;
+        private Vector3 offset;
 
         public SphereTerrainMask(GameObject root, Sphere sphere)
         {
             this.root = root;
             this.sphere = sphere;
             scale = new Vector3(SphereMap.SphereCell, 0, SphereMap.SphereCell);
+            offset = scale / 2;
         }
 
         public void ShowMask(Dictionary<int, Dictionary<int, int>> mapHeight)
@@ -44,10 +47,11 @@ namespace Assets.Script
             {
                 foreach (var v1 in v0.Value)
                 {
-                    if (v1.Value >= 0)
+                    if (v1.Value < 0)
                     {
-                        SetCell(v0.Key, v1.Key, temp);
+                        continue;
                     }
+                    SetCell(v0.Key, v1.Key, temp);
                 }
             }
         }
@@ -59,7 +63,8 @@ namespace Assets.Script
             if (obj == null)
             {
                 obj = GameObject.Instantiate(temp, maskRoot.transform).transform;
-                obj.localPosition = SphereMap.GetPositionByGrid(i, j);
+                obj.localPosition = SphereMap.GetPositionByGrid(i, j) + offset;
+                // obj.localPosition = SphereMap.GetPositionByGrid(i, j) ;
                 obj.localScale = scale;
                 obj.name = name;
             }

@@ -74,6 +74,23 @@ namespace Assets.Script.Manager
                     }
                 }
             }
+            if (Input.GetMouseButton(0))
+            {
+                if (hode)
+                {
+                    var dis = Vector3.Distance(startPos, Input.mousePosition);
+                    if (dis > 0.1f)
+                    {
+                        building.Pause();
+                        Ray ray = StageManager.Inst.ShowStage.Camera.ScreenPointToRay(Input.mousePosition);
+                        RaycastHit rayHit;
+                        if (Physics.Raycast(ray, out rayHit, 1000f, 1 << 8))
+                        {
+                            building.root.transform.position = rayHit.point;
+                        }
+                    }
+                }
+            }
             if (Input.GetMouseButtonUp(0))
             {
                 if (building==null)
@@ -104,6 +121,7 @@ namespace Assets.Script.Manager
                     if (dis <= 0.1f)
                     {
                         //没有移动
+                        hode = false;
                         return;
                     }
                     else
@@ -120,20 +138,6 @@ namespace Assets.Script.Manager
                     }
                 }
                 hode = false;
-            }
-
-            if (Input.GetMouseButton(0))
-            {
-                if (hode)
-                {
-                    building.Pause();
-                    Ray ray = StageManager.Inst.ShowStage.Camera.ScreenPointToRay(Input.mousePosition);
-                    RaycastHit rayHit;
-                    if (Physics.Raycast(ray, out rayHit, 1000f, 1 << 8))
-                    {
-                        building.root.transform.position = rayHit.point;
-                    }
-                }
             }
         }
 

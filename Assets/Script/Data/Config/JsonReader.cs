@@ -24,7 +24,7 @@ namespace Assets.Script.Data
         {
             this.json = json;
         }
-        public void ReadDictionary<TValue>(ref Dictionary<string, TValue> dic, string dic_key = null) where TValue : ConfigNode, new()
+        public void ReadDictionary<TValue>(ref Dictionary<string, TValue> dic, string dic_key = null) where TValue : DataBase, new()
         {
             if (dic == null)
             {

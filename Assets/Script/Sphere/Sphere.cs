@@ -9,7 +9,6 @@ namespace Assets.Script
     public class Sphere:StagePlayer
     {
         public const string defaultName = "SphereRoot";
-        public Stage stage;
         public int level;
         public SphereMap sphereMap;
         private SphereEditor spereEdtior;
@@ -22,7 +21,7 @@ namespace Assets.Script
         private SphereRing ring;
         private SphereEarth earth;
         private SphereTerrainMask terrainMask;
-        private List<StagePlayer> playerList;
+        private List<StagePlayer> childs;
         public Sphere()
         {
             InitData();
@@ -44,10 +43,10 @@ namespace Assets.Script
             ring = new SphereRing(this);
             earth = new SphereEarth(this);
             sphereMap = new SphereMap();
-            playerList = new List<StagePlayer>();
-            playerList.Add(this);
+            childs = new List<StagePlayer>();
+            childs.Add(this);
         }
-        private void Init()
+        public override void Load()
         {
             if (string.IsNullOrEmpty(id))
             {
@@ -96,9 +95,9 @@ namespace Assets.Script
 
         private void StartEditor()
         {
-            if (stage!=null)
+            if (Stage!=null)
             {
-                stage.cameraController.Enable = false;
+                Stage.cameraController.Enable = false;
             }
             for (int i = 0; i < characters.characters.Count; i++)
             {
@@ -119,7 +118,7 @@ namespace Assets.Script
         public void SetSphere(string id)
         {
             var sphereConfig = new SphereConfig(id);
-            SetSphere(sphereConfig);
+            SetSphere(sphereConfig.SphereTemplate);
         }
         public void SetSphere(SphereTemplate sphereTemplate)
         {
@@ -128,14 +127,14 @@ namespace Assets.Script
                 sphereMap.Init(sphereTemplate.Level);
                 var c = sphereTemplate;
                 this.level = c.Level;
-                playerList.Add(AddEarth(c.Earth, c.Level));
-                playerList.AddRange(AddBuildings(c.Buildings, c.Buildings_X, c.Buildings_Y, c.Buildings_R));
-                playerList.Add(AddTerrain(c.Terrain, c.Level));
-                playerList.AddRange(AddCharacter(c.CharactersId, c.CharactersEvo));
-                playerList.Add(AddCover(c.cover, c.Level));
-                playerList.Add(AddRing(c.ring, c.Level)) ;
-                playerList.Add(AddRoof(c.roof, c.Level));
-                playerList.Add(AddWall(c.wall, c.Level));
+                childs.Add(AddEarth(c.Earth, c.Level));
+                childs.AddRange(AddBuildings(c.Buildings, c.Buildings_X, c.Buildings_Y, c.Buildings_R));
+                childs.Add(AddTerrain(c.Terrain, c.Level));
+                childs.AddRange(AddCharacter(c.CharactersId, c.CharactersEvo));
+                childs.Add(AddCover(c.cover, c.Level));
+                childs.Add(AddRing(c.ring, c.Level)) ;
+                childs.Add(AddRoof(c.roof, c.Level));
+                childs.Add(AddWall(c.wall, c.Level));
             }
         }
         #region 顶
@@ -249,37 +248,29 @@ namespace Assets.Script
             return sphereMap.Check(grid_X, grid_Y, size);
         }
 
-        public override List<StagePlayer> GetGraphs()
+        public Vector3 GetWordPos(Vector3 localPos)
         {
-            return playerList;
+            return this.root.transform.TransformPoint(localPos);
         }
-        public override void Show()
+        public override List<StagePlayer> GetStagePlayers()
         {
-            if (root==null)
-            {
-                Init();
-            }
-            else
-            {
-                Enable();
-            }
+            return childs;
         }
-
         public override void Enable()
         {
             base.Enable();
-            for (int i = 0; i < playerList.Count; i++)
+            for (int i = 0; i < childs.Count; i++)
             {
-                playerList[i].Enable();
+                childs[i].Enable();
             }
         }
 
         public override void DisEnable()
         {
             base.DisEnable();
-            for (int i = 0; i < playerList.Count; i++)
+            for (int i = 0; i < childs.Count; i++)
             {
-                playerList[i].DisEnable();
+                childs[i].DisEnable();
             }
         }
     }

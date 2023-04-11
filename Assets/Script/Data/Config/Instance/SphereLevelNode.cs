@@ -32,7 +32,7 @@ namespace Assets.Script.Data
             }
         }
     }
-    public class SphereLevelNode : ConfigNode
+    public class SphereLevelNode : DataBase
     {
         public int Level
         {

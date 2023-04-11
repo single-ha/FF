@@ -1,13 +1,12 @@
-﻿namespace Assets.Script.Data
-{
-    public class SphereTemplate:DynamicConfig
-    {
-        public SphereTemplate(string configName) : base(configName)
-        {
-        }
+﻿using LitJson;
 
-        public SphereTemplate()
+namespace Assets.Script.Data
+{
+    public class SphereTemplate:DataBase
+    {
+        public SphereTemplate(JsonData json)
         {
+            SetJson(json);
         }
 
         public int Level
